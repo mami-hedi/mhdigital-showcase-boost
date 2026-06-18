@@ -1,25 +1,28 @@
 import { useState, createContext, useContext, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, CheckCircle2 } from "lucide-react";
+import { useT } from "./I18n";
 
 type Ctx = { open: () => void };
 const QuoteCtx = createContext<Ctx>({ open: () => {} });
 export const useQuote = () => useContext(QuoteCtx);
 
-const services = [
-  "Site vitrine",
-  "Site e-commerce",
-  "Application web sur mesure",
-  "ERP / CRM",
-  "Logiciel métier",
-  "Application mobile",
-  "Refonte / SEO",
-  "Autre",
-];
-
 export function QuoteProvider({ children }: { children: ReactNode }) {
   const [isOpen, setOpen] = useState(false);
   const [sent, setSent] = useState(false);
+  const { t } = useT();
+
+  const services = [
+    t("Site vitrine", "Showcase website"),
+    t("Site e-commerce", "E-commerce site"),
+    t("Application web sur mesure", "Custom web application"),
+    t("ERP / CRM", "ERP / CRM"),
+    t("Logiciel métier", "Business software"),
+    t("Application mobile", "Mobile app"),
+    t("Community Management", "Community Management"),
+    t("Refonte / SEO", "Redesign / SEO"),
+    t("Autre", "Other"),
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,9 +61,9 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
                 >
                   <X size={20} />
                 </button>
-                <h3 className="text-2xl font-bold">Demander un devis</h3>
+                <h3 className="text-2xl font-bold">{t("Demander un devis", "Request a quote")}</h3>
                 <p className="text-white/70 text-sm mt-1">
-                  Réponse personnalisée sous 24h — gratuit et sans engagement.
+                  {t("Réponse personnalisée sous 24h — gratuit et sans engagement.", "Tailored answer within 24h — free, no commitment.")}
                 </p>
               </div>
 
@@ -71,30 +74,30 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
                   className="p-12 text-center"
                 >
                   <CheckCircle2 className="mx-auto text-orange" size={64} />
-                  <h4 className="text-xl font-bold mt-4">Demande envoyée !</h4>
-                  <p className="text-muted-foreground mt-2">Notre équipe vous contactera très vite.</p>
+                  <h4 className="text-xl font-bold mt-4">{t("Demande envoyée !", "Request sent!")}</h4>
+                  <p className="text-muted-foreground mt-2">{t("Notre équipe vous contactera très vite.", "Our team will contact you shortly.")}</p>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="p-8 space-y-4">
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <Field label="Nom complet" name="name" required />
-                    <Field label="Entreprise" name="company" />
+                    <Field label={t("Nom complet", "Full name")} name="name" required />
+                    <Field label={t("Entreprise", "Company")} name="company" />
                   </div>
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <Field label="Email" name="email" type="email" required />
-                    <Field label="Téléphone" name="phone" type="tel" />
+                    <Field label={t("Email", "Email")} name="email" type="email" required />
+                    <Field label={t("Téléphone", "Phone")} name="phone" type="tel" />
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-navy block mb-1.5">Type de projet *</label>
+                    <label className="text-sm font-medium text-navy block mb-1.5">{t("Type de projet", "Project type")} *</label>
                     <select required className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-navy focus:outline-none focus:ring-2 focus:ring-orange transition">
-                      <option value="">Sélectionnez…</option>
+                      <option value="">{t("Sélectionnez…", "Select…")}</option>
                       {services.map(s => <option key={s}>{s}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-navy block mb-1.5">Budget estimé</label>
+                    <label className="text-sm font-medium text-navy block mb-1.5">{t("Budget estimé", "Estimated budget")}</label>
                     <select className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-navy focus:outline-none focus:ring-2 focus:ring-orange transition">
-                      <option>À définir</option>
+                      <option>{t("À définir", "To be defined")}</option>
                       <option>{"< 2 000 €"}</option>
                       <option>2 000 – 5 000 €</option>
                       <option>5 000 – 15 000 €</option>
@@ -102,19 +105,19 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
                     </select>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-navy block mb-1.5">Décrivez votre projet *</label>
+                    <label className="text-sm font-medium text-navy block mb-1.5">{t("Décrivez votre projet", "Describe your project")} *</label>
                     <textarea
                       required
                       rows={4}
                       className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-navy focus:outline-none focus:ring-2 focus:ring-orange transition resize-none"
-                      placeholder="Objectifs, fonctionnalités souhaitées, délais…"
+                      placeholder={t("Objectifs, fonctionnalités souhaitées, délais…", "Goals, desired features, deadlines…")}
                     />
                   </div>
                   <button
                     type="submit"
                     className="w-full bg-gradient-orange text-white font-semibold py-3.5 rounded-lg flex items-center justify-center gap-2 shadow-glow hover:scale-[1.02] active:scale-[0.99] transition"
                   >
-                    <Send size={18} /> Envoyer ma demande
+                    <Send size={18} /> {t("Envoyer ma demande", "Send my request")}
                   </button>
                 </form>
               )}
