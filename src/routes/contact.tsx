@@ -21,8 +21,8 @@ function ContactPage() {
   const { t } = useT();
 
   const infos = [
-    { icon: Mail, label: t("Email", "Email"), value: "contact@mhdigital.com" },
-    { icon: Phone, label: t("Téléphone / WhatsApp", "Phone / WhatsApp"), value: "+216 58 146 177" },
+    { icon: Mail, label: t("Email", "Email"), value: "contact@mh-digital-solution.com", href: "mailto:contact@mh-digital-solution.com" },
+    { icon: Phone, label: t("Téléphone / WhatsApp", "Phone / WhatsApp"), value: "+216 58 146 177", href: "tel:+21658146177" },
     { icon: MapPin, label: t("Adresse", "Address"), value: t("Hammamet, Tunisie", "Hammamet, Tunisia") },
     { icon: Clock, label: t("Mode de travail", "Work mode"), value: t("100% télétravail · Lun – Ven", "100% remote · Mon – Fri") },
   ];
@@ -56,7 +56,16 @@ function ContactPage() {
                 </div>
                 <div>
                   <div className="font-bold text-navy">{info.label}</div>
+                 <div> {info.href ? (
+                   
+                    <a href={info.href}
+                     className="text-sm text-muted-foreground mt-0.5 hover:text-orange transition block"
+                   >
+                     {info.value}
+                   </a>
+                 ) : (
                   <div className="text-sm text-muted-foreground mt-0.5">{info.value}</div>
+                 )}</div>
                 </div>
               </motion.div>
             ))}

@@ -2,7 +2,7 @@ import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Mail, Phone, MapPin, Facebook, Linkedin, Instagram } from "lucide-react";
-import logoAsset from "@/assets/mh-logo.png.asset.json";
+import logo from "@/assets/Logo.png";
 import { QuoteProvider, useQuote } from "./QuoteDialog";
 import { I18nProvider, LangSwitcher, useT } from "./I18n";
 import { WhatsAppFab } from "./WhatsAppFab";
@@ -25,7 +25,7 @@ function Header() {
     <header className="sticky top-0 z-50 backdrop-blur-lg bg-background/85 border-b border-border">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 h-20 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 group">
-          <img src={logoAsset.url} alt="MH Digital Solution" className="h-12 w-auto transition-transform group-hover:scale-105" />
+          <img src={logo} alt="MH Digital Solution" className="h-16 w-auto transition-transform group-hover:scale-105" />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-1">
@@ -105,6 +105,7 @@ function Header() {
 function Footer() {
   const { open: openQuote } = useQuote();
   const { t } = useT();
+  
   const nav = [
     { to: "/", label: t("Accueil", "Home") },
     { to: "/services", label: t("Services", "Services") },
@@ -112,11 +113,13 @@ function Footer() {
     { to: "/a-propos", label: t("À propos", "About") },
     { to: "/contact", label: t("Contact", "Contact") },
   ] as const;
+
   return (
     <footer className="bg-gradient-navy text-white mt-20">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 py-16 grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+        {/* Colonne 1 : Logo & Description */}
         <div>
-          <img src={logoAsset.url} alt="MH Digital Solution" className="h-16 w-auto bg-white rounded-xl p-2" />
+          <img src={logo} alt="MH Digital Solution" className="h-16 w-auto bg-white rounded-xl p-2" />
           <p className="mt-4 text-white/70 text-sm leading-relaxed">
             {t(
               "Agence digitale spécialisée dans la création de solutions web sur mesure, ERP, logiciels métier et community management.",
@@ -124,21 +127,37 @@ function Footer() {
             )}
           </p>
           <div className="flex gap-3 mt-5">
-            {[Facebook, Linkedin, Instagram].map((Icon, i) => (
-              <a key={i} href="#" className="w-9 h-9 rounded-full bg-white/10 hover:bg-orange flex items-center justify-center transition">
+            {[
+              { Icon: Facebook, href: "https://www.facebook.com/profile.php?id=61558644863951" },
+              { Icon: Linkedin, href: "https://www.linkedin.com/company/mhdigitalsolution" },
+              { Icon: Instagram, href: "https://www.instagram.com/mhdigitalsolution/" },
+            ].map(({ Icon, href }, i) => (
+              <a
+                key={i}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full bg-white/10 hover:bg-orange flex items-center justify-center transition"
+              >
                 <Icon size={16} />
               </a>
             ))}
           </div>
         </div>
+        
+        {/* Colonne 2 : Navigation */}
         <div>
           <h4 className="font-bold text-orange mb-4">{t("Navigation", "Navigation")}</h4>
           <ul className="space-y-2 text-sm text-white/70">
             {nav.map(n => (
-              <li key={n.to}><Link to={n.to} className="hover:text-orange transition">{n.label}</Link></li>
+              <li key={n.to}>
+                <Link to={n.to} className="hover:text-orange transition">{n.label}</Link>
+              </li>
             ))}
           </ul>
         </div>
+
+        {/* Colonne 3 : Services */}
         <div>
           <h4 className="font-bold text-orange mb-4">{t("Services", "Services")}</h4>
           <ul className="space-y-2 text-sm text-white/70">
@@ -150,13 +169,28 @@ function Footer() {
             <li>{t("Community Management", "Community Management")}</li>
           </ul>
         </div>
+
+        {/* Colonne 4 : Contact */}
         <div>
           <h4 className="font-bold text-orange mb-4">{t("Contact", "Contact")}</h4>
           <ul className="space-y-3 text-sm text-white/70">
-            <li className="flex items-start gap-2"><Mail size={16} className="mt-0.5 text-orange" /> contact@mhdigital.com</li>
-            <li className="flex items-start gap-2"><Phone size={16} className="mt-0.5 text-orange" /> +216 58 146 177</li>
-            <li className="flex items-start gap-2"><MapPin size={16} className="mt-0.5 text-orange" /> Hammamet, {t("Tunisie", "Tunisia")} · {t("100% télétravail", "100% remote")}</li>
-          </ul>
+  <li className="flex items-start gap-2">
+    <Mail size={16} className="mt-0.5 text-orange shrink-0" /> 
+    <a href="mailto:contact@mh-digital-solution.com" className="hover:text-orange transition">
+      contact@mh-digital-solution.com
+    </a>
+  </li>
+  <li className="flex items-start gap-2">
+    <Phone size={16} className="mt-0.5 text-orange shrink-0" /> 
+    <a href="tel:+21658146177" className="hover:text-orange transition">
+      +216 58 146 177
+    </a>
+  </li>
+  <li className="flex items-start gap-2">
+    <MapPin size={16} className="mt-0.5 text-orange shrink-0" /> 
+    <span>Hammamet, {t("Tunisie", "Tunisia")} · {t("100% télétravail", "100% remote")}</span>
+  </li>
+</ul>
           <button
             onClick={openQuote}
             className="mt-5 bg-gradient-orange text-white font-semibold px-5 py-2.5 rounded-full text-sm shadow-glow"
@@ -165,6 +199,8 @@ function Footer() {
           </button>
         </div>
       </div>
+      
+      {/* Copyright */}
       <div className="border-t border-white/10 py-5 text-center text-white/50 text-sm">
         © {new Date().getFullYear()} MH Digital Solution. {t("Tous droits réservés.", "All rights reserved.")}
       </div>
