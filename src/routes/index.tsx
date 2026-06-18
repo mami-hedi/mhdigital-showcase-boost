@@ -1,18 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   ArrowRight, Code2, Database, Smartphone, ShoppingCart, Layers, Cpu,
-  Zap, Shield, Sparkles, CheckCircle2, Star, Users, Rocket, TrendingUp, Award,
+  Zap, Shield, Sparkles, Star, Users, Rocket, TrendingUp, Award, Share2,
 } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 import { useQuote } from "@/components/QuoteDialog";
+import { useT } from "@/components/I18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MH Digital Solution — Agence web, ERP & logiciels sur mesure" },
-      { name: "description", content: "Création de sites web, e-commerce, ERP, CRM et logiciels métier sur mesure. Design moderne, performance et résultats." },
+      { title: "MH Digital Solution — Web, ERP, logiciels & community management" },
+      { name: "description", content: "Création de sites web, e-commerce, ERP, CRM, logiciels métier et community management. Design moderne, performance et résultats." },
       { property: "og:title", content: "MH Digital Solution" },
       { property: "og:description", content: "Votre partenaire digital pour des solutions sur mesure." },
     ],
@@ -20,16 +21,18 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-const heroWords = ["sur mesure", "performants", "élégants", "évolutifs"];
-
 function HomePage() {
   const { open } = useQuote();
+  const { t, lang } = useT();
+  const heroWords = lang === "fr"
+    ? ["sur mesure", "performantes", "élégantes", "évolutives"]
+    : ["custom-made", "high-performing", "elegant", "scalable"];
   const [wordIdx, setWordIdx] = useState(0);
 
   useEffect(() => {
-    const t = setInterval(() => setWordIdx((i) => (i + 1) % heroWords.length), 2200);
-    return () => clearInterval(t);
-  }, []);
+    const id = setInterval(() => setWordIdx((i) => (i + 1) % heroWords.length), 2200);
+    return () => clearInterval(id);
+  }, [heroWords.length]);
 
   return (
     <>
@@ -50,10 +53,10 @@ function HomePage() {
           >
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 text-sm">
               <Sparkles size={14} className="text-orange-bright" />
-              Agence digitale nouvelle génération
+              {t("Agence digitale nouvelle génération", "Next-generation digital agency")}
             </div>
             <h1 className="mt-6 text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05]">
-              Des solutions digitales{" "}
+              {t("Des solutions digitales", "Digital solutions that are")}{" "}
               <span className="relative inline-block">
                 <motion.span
                   key={wordIdx}
@@ -67,26 +70,32 @@ function HomePage() {
               </span>
             </h1>
             <p className="mt-6 text-lg md:text-xl text-white/80 max-w-xl leading-relaxed">
-              Sites web, e-commerce, ERP, CRM, logiciels métier — nous concevons et développons
-              des produits qui propulsent votre activité.
+              {t(
+                "Sites web, e-commerce, ERP, CRM, logiciels métier et community management — nous concevons des produits qui propulsent votre activité.",
+                "Websites, e-commerce, ERP, CRM, business software and community management — we craft products that boost your business."
+              )}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <button
                 onClick={open}
                 className="group inline-flex items-center gap-2 bg-gradient-orange text-white font-semibold px-7 py-4 rounded-full shadow-glow hover:scale-105 active:scale-95 transition animate-pulse-glow"
               >
-                Demander un devis
+                {t("Demander un devis", "Request a quote")}
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition" />
               </button>
               <Link
                 to="/services"
                 className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 text-white font-semibold px-7 py-4 rounded-full hover:bg-white/20 transition"
               >
-                Découvrir nos services
+                {t("Découvrir nos services", "Explore our services")}
               </Link>
             </div>
             <div className="mt-10 flex gap-8 text-white/70 text-sm">
-              {[["120+", "Projets livrés"], ["98%", "Clients satisfaits"], ["8 ans", "D'expertise"]].map(([n, l]) => (
+              {[
+                ["120+", t("Projets livrés", "Projects delivered")],
+                ["98%", t("Clients satisfaits", "Happy clients")],
+                ["24/7", t("Support réactif", "Responsive support")],
+              ].map(([n, l]) => (
                 <div key={l}>
                   <div className="text-2xl font-bold text-white">{n}</div>
                   <div>{l}</div>
@@ -95,7 +104,6 @@ function HomePage() {
             </div>
           </motion.div>
 
-          {/* Floating mockup cards */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -122,8 +130,8 @@ function HomePage() {
               <div className="flex items-center gap-3">
                 <Database className="text-orange" size={24} />
                 <div>
-                  <div className="font-bold text-navy">ERP Connecté</div>
-                  <div className="text-xs text-muted-foreground">Temps réel</div>
+                  <div className="font-bold text-navy">{t("ERP Connecté", "Connected ERP")}</div>
+                  <div className="text-xs text-muted-foreground">{t("Temps réel", "Real time")}</div>
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-2 mt-4">
@@ -135,7 +143,7 @@ function HomePage() {
 
             <FloatCard className="bottom-0 right-8 w-72" delay={0.6}>
               <div className="flex items-center justify-between mb-2">
-                <span className="font-bold text-navy">Ventes</span>
+                <span className="font-bold text-navy">{t("Ventes", "Sales")}</span>
                 <span className="text-orange font-bold flex items-center gap-1 text-sm">
                   <TrendingUp size={14} /> +32%
                 </span>
@@ -164,7 +172,7 @@ function HomePage() {
 
       {/* Marquee logos */}
       <section className="py-10 bg-card border-y border-border overflow-hidden">
-        <p className="text-center text-sm text-muted-foreground uppercase tracking-widest mb-6">Ils nous font confiance</p>
+        <p className="text-center text-sm text-muted-foreground uppercase tracking-widest mb-6">{t("Ils nous font confiance", "They trust us")}</p>
         <div className="flex overflow-hidden">
           <div className="flex gap-16 animate-marquee whitespace-nowrap">
             {[...Array(2)].flatMap((_, i) =>
@@ -180,18 +188,26 @@ function HomePage() {
       <section className="py-24 bg-background">
         <div className="max-w-7xl mx-auto px-5 lg:px-8">
           <SectionHeader
-            tag="Nos services"
-            title="Tout ce dont vous avez besoin pour réussir en ligne"
-            subtitle="Du site vitrine à l'ERP complexe — une expertise full-stack au service de vos ambitions."
+            tag={t("Nos services", "Our services")}
+            title={t("Tout ce dont vous avez besoin pour réussir en ligne", "Everything you need to succeed online")}
+            subtitle={t("Du site vitrine au community management — une expertise full-stack au service de vos ambitions.", "From showcase sites to community management — full-stack expertise to power your ambitions.")}
           />
           <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {serviceItems.map((s, i) => (
+            {[
+              { icon: Layers, title: t("Sites vitrines & corporate", "Showcase & corporate sites"), desc: t("Présence en ligne élégante, performante et optimisée SEO pour convertir vos visiteurs.", "Elegant, fast, SEO-optimized online presence that converts your visitors.") },
+              { icon: ShoppingCart, title: t("Sites e-commerce", "E-commerce sites"), desc: t("Boutiques en ligne complètes : paiement, gestion stock, marketing et tableaux de bord.", "Complete online stores: payment, stock, marketing, dashboards.") },
+              { icon: Code2, title: t("Applications web sur mesure", "Custom web apps"), desc: t("Plateformes SaaS, espaces clients, portails métier — pensés pour votre activité.", "SaaS platforms, customer portals, business apps tailored to you.") },
+              { icon: Database, title: t("ERP & CRM", "ERP & CRM"), desc: t("Systèmes de gestion intégrés pour piloter ventes, stock, comptabilité et relation client.", "Integrated systems to manage sales, stock, accounting and customer relations.") },
+              { icon: Cpu, title: t("Logiciels métier", "Business software"), desc: t("Outils internes dédiés pour automatiser vos processus et gagner en productivité.", "Dedicated internal tools to automate processes and boost productivity.") },
+              { icon: Smartphone, title: t("Applications mobiles", "Mobile apps"), desc: t("Apps iOS & Android natives ou cross-platform, pour aller à la rencontre de vos utilisateurs.", "Native or cross-platform iOS & Android apps to reach your users.") },
+              { icon: Share2, title: t("Community Management", "Community Management"), desc: t("Gestion Facebook & Instagram : contenus, créations visuelles, publications et engagement.", "Facebook & Instagram management: content, visuals, posts and engagement.") },
+            ].map((s, i) => (
               <ServiceCard key={s.title} {...s} idx={i} />
             ))}
           </div>
           <div className="mt-12 text-center">
             <Link to="/services" className="inline-flex items-center gap-2 text-orange font-semibold hover:gap-3 transition-all">
-              Voir tous nos services <ArrowRight size={18} />
+              {t("Voir tous nos services", "View all services")} <ArrowRight size={18} />
             </Link>
           </div>
         </div>
@@ -202,22 +218,28 @@ function HomePage() {
         <div className="absolute inset-0 bg-grid-animated opacity-10" />
         <div className="max-w-7xl mx-auto px-5 lg:px-8 relative">
           <SectionHeader
-            tag="Pourquoi MH Digital"
-            title="Une approche pensée pour votre croissance"
-            subtitle="Chez nous, chaque projet est un partenariat — pas une simple prestation."
+            tag={t("Pourquoi MH Digital", "Why MH Digital")}
+            title={t("Une approche pensée pour votre croissance", "An approach built for your growth")}
+            subtitle={t("Chez nous, chaque projet est un partenariat — pas une simple prestation.", "With us, every project is a partnership — not just a service.")}
             dark
           />
           <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {whyUs.map((w, i) => (
+            {[
+              { icon: Zap, title: t("Rapides & réactifs", "Fast & responsive"), desc: t("Méthode agile, livraisons régulières, équipe disponible tout au long du projet.", "Agile method, regular delivery, an always-available team.") },
+              { icon: Shield, title: t("Sécurité & qualité", "Security & quality"), desc: t("Code propre, tests, déploiement sécurisé. Vos données et celles de vos clients protégées.", "Clean code, tests, secure deploys. Your data and your customers' data are safe.") },
+              { icon: Users, title: t("Équipe dédiée", "Dedicated team"), desc: t("Un chef de projet, des designers et développeurs experts à vos côtés.", "A project lead plus expert designers and developers by your side.") },
+              { icon: Award, title: t("Résultats mesurables", "Measurable results"), desc: t("Performance, conversion, ROI : nous suivons les indicateurs qui comptent vraiment.", "Performance, conversion, ROI: we track the metrics that matter.") },
+            ].map((w, i) => (
               <motion.div
                 key={w.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                whileHover={{ y: -8, scale: 1.02 }}
                 className="p-6 rounded-2xl bg-white/5 backdrop-blur border border-white/10 hover:border-orange/50 hover:bg-white/10 transition group"
               >
-                <div className="w-12 h-12 rounded-xl bg-gradient-orange flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                <div className="w-12 h-12 rounded-xl bg-gradient-orange flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition">
                   <w.icon size={22} className="text-white" />
                 </div>
                 <h3 className="font-display text-xl font-bold mb-2">{w.title}</h3>
@@ -231,19 +253,25 @@ function HomePage() {
       {/* PROCESS */}
       <section className="py-24 bg-background">
         <div className="max-w-7xl mx-auto px-5 lg:px-8">
-          <SectionHeader tag="Notre méthode" title="Un processus clair, des résultats concrets" />
+          <SectionHeader tag={t("Notre méthode", "Our method")} title={t("Un processus clair, des résultats concrets", "A clear process, concrete results")} />
           <div className="mt-16 grid md:grid-cols-4 gap-8 relative">
             <div className="hidden md:block absolute top-8 left-[12%] right-[12%] h-0.5 bg-gradient-to-r from-orange via-orange to-orange/20" />
-            {process.map((p, i) => (
+            {[
+              { step: "01", title: t("Découverte", "Discovery"), desc: t("Échange approfondi pour comprendre vos besoins et objectifs.", "Deep dive to understand your needs and goals.") },
+              { step: "02", title: t("Conception", "Design"), desc: t("Wireframes, maquettes UI/UX et validation avec vous.", "Wireframes, UI/UX mockups and validation with you.") },
+              { step: "03", title: t("Développement", "Development"), desc: t("Construction itérative, tests et démos régulières.", "Iterative build, tests and regular demos.") },
+              { step: "04", title: t("Lancement", "Launch"), desc: t("Mise en ligne, formation et accompagnement continu.", "Go-live, training and ongoing support.") },
+            ].map((p, i) => (
               <motion.div
                 key={p.step}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ delay: i * 0.15, duration: 0.6 }}
+                whileHover={{ y: -6 }}
                 className="relative text-center"
               >
-                <div className="mx-auto w-16 h-16 rounded-full bg-gradient-orange text-white flex items-center justify-center font-bold text-xl shadow-glow relative z-10">
+                <div className="mx-auto w-16 h-16 rounded-full bg-gradient-orange text-white flex items-center justify-center font-bold text-xl shadow-glow relative z-10 hover:animate-pulse-glow">
                   {p.step}
                 </div>
                 <h3 className="mt-5 font-display text-xl font-bold text-navy">{p.title}</h3>
@@ -257,15 +285,20 @@ function HomePage() {
       {/* TESTIMONIALS */}
       <section className="py-24 bg-accent">
         <div className="max-w-7xl mx-auto px-5 lg:px-8">
-          <SectionHeader tag="Témoignages" title="La satisfaction de nos clients, notre plus belle vitrine" />
+          <SectionHeader tag={t("Témoignages", "Testimonials")} title={t("La satisfaction de nos clients, notre plus belle vitrine", "Our clients' satisfaction is our finest showcase")} />
           <div className="mt-14 grid md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
+            {[
+              { name: "Karim B.", role: t("CEO, NovaTech", "CEO, NovaTech"), quote: t("MH Digital a transformé notre vision en une plateforme robuste. Un partenaire de confiance.", "MH Digital turned our vision into a rock-solid platform. A trusted partner.") },
+              { name: "Sara L.", role: t("Directrice, Boutique Atlas", "Director, Boutique Atlas"), quote: t("Notre e-commerce a doublé son CA en 6 mois grâce à leur expertise et leur écoute.", "Our e-commerce doubled revenue in 6 months thanks to their expertise.") },
+              { name: "Yassine R.", role: t("DAF, Groupe Horizon", "CFO, Horizon Group"), quote: t("L'ERP livré est exactement ce dont nous avions besoin. Équipe sérieuse et compétente.", "The delivered ERP is exactly what we needed. Serious, skilled team.") },
+            ].map((t2, i) => (
               <motion.div
-                key={t.name}
-                initial={{ opacity: 0, y: 30 }}
+                key={t2.name}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                whileHover={{ y: -6, boxShadow: "0 20px 60px -15px rgba(233,122,31,0.3)" }}
                 className="bg-card p-7 rounded-2xl shadow-card border border-border"
               >
                 <div className="flex gap-1 mb-3">
@@ -273,14 +306,14 @@ function HomePage() {
                     <Star key={j} size={16} className="fill-orange text-orange" />
                   ))}
                 </div>
-                <p className="text-navy leading-relaxed">"{t.quote}"</p>
+                <p className="text-navy leading-relaxed">"{t2.quote}"</p>
                 <div className="mt-5 flex items-center gap-3">
                   <div className="w-11 h-11 rounded-full bg-gradient-orange flex items-center justify-center text-white font-bold">
-                    {t.name[0]}
+                    {t2.name[0]}
                   </div>
                   <div>
-                    <div className="font-semibold text-navy">{t.name}</div>
-                    <div className="text-xs text-muted-foreground">{t.role}</div>
+                    <div className="font-semibold text-navy">{t2.name}</div>
+                    <div className="text-xs text-muted-foreground">{t2.role}</div>
                   </div>
                 </div>
               </motion.div>
@@ -296,20 +329,21 @@ function HomePage() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
             className="relative overflow-hidden rounded-3xl bg-gradient-hero p-12 md:p-16 text-white text-center shadow-glow"
           >
             <div className="absolute inset-0 bg-grid-animated opacity-20" />
             <div className="relative">
-              <Rocket className="mx-auto text-orange-bright" size={48} />
-              <h2 className="mt-4 text-3xl md:text-5xl font-extrabold">Prêt à lancer votre projet ?</h2>
+              <Rocket className="mx-auto text-orange-bright animate-float" size={48} />
+              <h2 className="mt-4 text-3xl md:text-5xl font-extrabold">{t("Prêt à lancer votre projet ?", "Ready to launch your project?")}</h2>
               <p className="mt-4 text-white/80 max-w-xl mx-auto">
-                Discutons de votre vision. Devis gratuit et personnalisé sous 24h.
+                {t("Discutons de votre vision. Devis gratuit et personnalisé sous 24h.", "Let's talk about your vision. Free, tailored quote within 24h.")}
               </p>
               <button
                 onClick={open}
                 className="mt-8 inline-flex items-center gap-2 bg-gradient-orange text-white font-semibold px-8 py-4 rounded-full shadow-glow hover:scale-105 transition"
               >
-                Demander un devis <ArrowRight size={18} />
+                {t("Demander un devis", "Request a quote")} <ArrowRight size={18} />
               </button>
             </div>
           </motion.div>
@@ -335,27 +369,32 @@ function FloatCard({ children, className = "", delay = 0 }: { children: ReactNod
 
 function SectionHeader({ tag, title, subtitle, dark = false }: { tag: string; title: string; subtitle?: string; dark?: boolean }) {
   return (
-    <div className="text-center max-w-3xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.5 }}
+      className="text-center max-w-3xl mx-auto"
+    >
       <div className={`inline-block text-xs font-bold uppercase tracking-[0.2em] ${dark ? "text-orange-bright" : "text-orange"}`}>{tag}</div>
       <h2 className={`mt-3 text-3xl md:text-5xl font-extrabold ${dark ? "text-white" : "text-navy"}`}>{title}</h2>
       {subtitle && <p className={`mt-4 text-lg ${dark ? "text-white/70" : "text-muted-foreground"}`}>{subtitle}</p>}
-    </div>
+    </motion.div>
   );
 }
 
 function ServiceCard({ icon: Icon, title, desc, idx }: { icon: any; title: string; desc: string; idx: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: idx * 0.08 }}
-      whileHover={{ y: -6 }}
-      className="group relative p-7 rounded-2xl bg-card border border-border hover:border-orange/40 shadow-card transition overflow-hidden"
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ delay: idx * 0.08, duration: 0.6 }}
+      whileHover={{ y: -8, scale: 1.02 }}
+      className="group relative p-7 rounded-2xl bg-card border border-border hover:border-orange/40 shadow-card hover:shadow-glow transition-all overflow-hidden"
     >
-      <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-orange/5 group-hover:bg-orange/10 transition" />
+      <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-orange/5 group-hover:bg-orange/15 transition" />
       <div className="relative">
-        <div className="w-14 h-14 rounded-xl bg-gradient-orange flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition">
+        <div className="w-14 h-14 rounded-xl bg-gradient-orange flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-6 transition">
           <Icon size={26} className="text-white" />
         </div>
         <h3 className="font-display text-xl font-bold text-navy">{title}</h3>
@@ -364,34 +403,3 @@ function ServiceCard({ icon: Icon, title, desc, idx }: { icon: any; title: strin
     </motion.div>
   );
 }
-
-const serviceItems = [
-  { icon: Layers, title: "Sites vitrines & corporate", desc: "Présence en ligne élégante, performante et optimisée SEO pour convertir vos visiteurs." },
-  { icon: ShoppingCart, title: "Sites e-commerce", desc: "Boutiques en ligne complètes : paiement, gestion stock, marketing et tableaux de bord." },
-  { icon: Code2, title: "Applications web sur mesure", desc: "Plateformes SaaS, espaces clients, portails métier — pensés pour votre activité." },
-  { icon: Database, title: "ERP & CRM", desc: "Systèmes de gestion intégrés pour piloter ventes, stock, comptabilité et relation client." },
-  { icon: Cpu, title: "Logiciels métier", desc: "Outils internes dédiés pour automatiser vos processus et gagner en productivité." },
-  { icon: Smartphone, title: "Applications mobiles", desc: "Apps iOS & Android natives ou cross-platform, pour aller à la rencontre de vos utilisateurs." },
-];
-
-const whyUs = [
-  { icon: Zap, title: "Rapides & réactifs", desc: "Méthode agile, livraisons régulières, équipe disponible tout au long du projet." },
-  { icon: Shield, title: "Sécurité & qualité", desc: "Code propre, tests, déploiement sécurisé. Vos données et celles de vos clients protégées." },
-  { icon: Users, title: "Équipe dédiée", desc: "Un chef de projet, des designers et développeurs experts à vos côtés." },
-  { icon: Award, title: "Résultats mesurables", desc: "Performance, conversion, ROI : nous suivons les indicateurs qui comptent vraiment." },
-];
-
-const process = [
-  { step: "01", title: "Découverte", desc: "Échange approfondi pour comprendre vos besoins et objectifs." },
-  { step: "02", title: "Conception", desc: "Wireframes, maquettes UI/UX et validation avec vous." },
-  { step: "03", title: "Développement", desc: "Construction itérative, tests et démos régulières." },
-  { step: "04", title: "Lancement", desc: "Mise en ligne, formation et accompagnement continu." },
-];
-
-const testimonials = [
-  { name: "Karim B.", role: "CEO, NovaTech", quote: "MH Digital a transformé notre vision en une plateforme robuste. Un partenaire de confiance." },
-  { name: "Sara L.", role: "Directrice, Boutique Atlas", quote: "Notre e-commerce a doublé son CA en 6 mois grâce à leur expertise et leur écoute." },
-  { name: "Yassine R.", role: "DAF, Groupe Horizon", quote: "L'ERP livré est exactement ce dont nous avions besoin. Équipe sérieuse et compétente." },
-];
-
-type ReactNode = import("react").ReactNode;
