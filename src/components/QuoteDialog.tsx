@@ -1,7 +1,13 @@
 import { useState, createContext, useContext, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, CheckCircle2 } from "lucide-react";
+import { X, Send, CheckCircle2, Loader2 } from "lucide-react";
+import emailjs from "@emailjs/browser";
 import { useT } from "./I18n";
+
+// 👉 Identifiants EmailJS
+const EMAILJS_SERVICE_ID = "service_pn5w0yr";
+const EMAILJS_TEMPLATE_ID = "template_9stpe4h";
+const EMAILJS_PUBLIC_KEY = "kTsT5hKqJimHbnxMG";
 
 type Ctx = { open: () => void };
 const QuoteCtx = createContext<Ctx>({ open: () => {} });
@@ -10,6 +16,8 @@ export const useQuote = () => useContext(QuoteCtx);
 export function QuoteProvider({ children }: { children: ReactNode }) {
   const [isOpen, setOpen] = useState(false);
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
   const { t } = useT();
 
   const services = [
@@ -24,13 +32,47 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
     t("Autre", "Other"),
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => {
-      setSent(false);
-      setOpen(false);
-    }, 2200);
+    setError(false);
+    setSending(true);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const templateParams = {
+      name: formData.get("name") as string,
+      company: formData.get("company") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      project_type: formData.get("project_type") as string,
+      budget: formData.get("budget") as string,
+      message: formData.get("message") as string,
+      time: new Date().toLocaleString("fr-FR", {
+        dateStyle: "long",
+        timeStyle: "short",
+      }),
+    };
+
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        { publicKey: EMAILJS_PUBLIC_KEY }
+      );
+      setSent(true);
+      form.reset();
+      setTimeout(() => {
+        setSent(false);
+        setOpen(false);
+      }, 2200);
+    } catch (err) {
+      console.error("EmailJS error:", err);
+      setError(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -89,14 +131,14 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
                   </div>
                   <div>
                     <label className="text-sm font-medium text-navy block mb-1.5">{t("Type de projet", "Project type")} *</label>
-                    <select required className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-navy focus:outline-none focus:ring-2 focus:ring-orange transition">
+                    <select name="project_type" required className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-navy focus:outline-none focus:ring-2 focus:ring-orange transition">
                       <option value="">{t("Sélectionnez…", "Select…")}</option>
                       {services.map(s => <option key={s}>{s}</option>)}
                     </select>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-navy block mb-1.5">{t("Budget estimé", "Estimated budget")}</label>
-                    <select className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-navy focus:outline-none focus:ring-2 focus:ring-orange transition">
+                    <select name="budget" className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-navy focus:outline-none focus:ring-2 focus:ring-orange transition">
                       <option>{t("À définir", "To be defined")}</option>
                       <option>{"< 2 000 €"}</option>
                       <option>2 000 – 5 000 €</option>
@@ -107,17 +149,37 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
                   <div>
                     <label className="text-sm font-medium text-navy block mb-1.5">{t("Décrivez votre projet", "Describe your project")} *</label>
                     <textarea
+                      name="message"
                       required
                       rows={4}
                       className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-navy focus:outline-none focus:ring-2 focus:ring-orange transition resize-none"
                       placeholder={t("Objectifs, fonctionnalités souhaitées, délais…", "Goals, desired features, deadlines…")}
                     />
                   </div>
+
+                  {error && (
+                    <p className="text-sm text-red-500">
+                      {t(
+                        "Une erreur est survenue lors de l'envoi. Merci de réessayer ou de nous contacter directement.",
+                        "Something went wrong while sending. Please try again or contact us directly."
+                      )}
+                    </p>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full bg-gradient-orange text-white font-semibold py-3.5 rounded-lg flex items-center justify-center gap-2 shadow-glow hover:scale-[1.02] active:scale-[0.99] transition"
+                    disabled={sending}
+                    className="w-full bg-gradient-orange text-white font-semibold py-3.5 rounded-lg flex items-center justify-center gap-2 shadow-glow hover:scale-[1.02] active:scale-[0.99] transition disabled:opacity-60 disabled:hover:scale-100"
                   >
-                    <Send size={18} /> {t("Envoyer ma demande", "Send my request")}
+                    {sending ? (
+                      <>
+                        <Loader2 size={18} className="animate-spin" /> {t("Envoi en cours…", "Sending…")}
+                      </>
+                    ) : (
+                      <>
+                        <Send size={18} /> {t("Envoyer ma demande", "Send my request")}
+                      </>
+                    )}
                   </button>
                 </form>
               )}
