@@ -2,12 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import erp from "@/assets/portfolio-erp.jpg";
-import ecom from "@/assets/portfolio-ecom.jpg";
-import mobile from "@/assets/portfolio-mobile.jpg";
-import corp from "@/assets/portfolio-corp.jpg";
-import saas from "@/assets/portfolio-saas.jpg";
-import resto from "@/assets/portfolio-resto.jpg";
+import erp from "@/assets/mockup_sejour_medical.png";
+import ecom from "@/assets/mockup_rh.png";
+import mobile from "@/assets/mockup_darbandb_admin.png";
+import corp from "@/assets/mockup_gem_gwenaelle.png";
+import saas from "@/assets/mockup_darbandb.png";
+import resto from "@/assets/mockup_annonce.png";
 import { useQuote } from "@/components/QuoteDialog";
 import { useT } from "@/components/I18n";
 
@@ -29,15 +29,15 @@ function PortfolioPage() {
   const { open } = useQuote();
 
   const projects = [
-    { img: erp, title: "Pilot ERP", cat: "ERP", desc: t("Plateforme de gestion intégrée pour PME industrielle.", "Integrated management platform for an industrial SMB.") },
-    { img: ecom, title: "Atlas Store", cat: "E-commerce", desc: t("Boutique en ligne multi-devises, +200 produits.", "Multi-currency online store, 200+ products.") },
-    { img: mobile, title: "FitTrack", cat: "Mobile", desc: t("Application iOS / Android de coaching sportif.", "iOS / Android fitness coaching app.") },
-    { img: corp, title: "Horizon Group", cat: "Corporate", desc: t("Site institutionnel pour groupe international.", "Corporate website for an international group.") },
-    { img: saas, title: "Insight Analytics", cat: "SaaS", desc: t("Plateforme analytics temps réel pour marketers.", "Real-time analytics platform for marketers.") },
-    { img: resto, title: "Le Saveurs", cat: "Restauration", desc: t("Site de réservation + commandes en ligne.", "Booking & online ordering site.") },
-    { img: corp, title: "Brand Boost", cat: "Social", desc: t("Campagne Facebook & Instagram — +180% engagement.", "Facebook & Instagram campaign — +180% engagement.") },
+    { img: erp, title: "Séjour Médical", cat: "Corporate", desc: t("Plateforme vitrine et facilitateur de confiance pour le tourisme médical international.", "Showcase platform and trusted facilitator for international medical tourism.") },
+    { img: ecom, title: "RH Bâtiment", cat: "Vitrine", desc: t("Site vitrine professionnel mettant en valeur l'expertise et la gestion de projets de construction générale.", "Professional showcase website highlighting expertise and project management in general construction.") },
+    { img: mobile, title: "Dar B&B Admin", cat: "Dashboard", desc: t("Système de gestion intégrée (Back-office) pour piloter les réservations, les tarifs dynamiques, les codes promos et le calendrier des disponibilités.", "Integrated management system (Back-office) to control reservations, dynamic pricing, promo codes, and availability calendar.") },
+    { img: corp, title: "GEM by Gwenaëlle", cat: "E-commerce", desc: t("Boutique en ligne élégante dédiée à l'artisanat d'art, aux créations en macramé et accessoires faits main.", "Elegant online store dedicated to art crafts, macrame creations, and handmade accessories.") },
+    { img: saas, title: "Dar B&B", cat: "Hébergement", desc: t("Plateforme de réservation en ligne et vitrine d'exception pour une maison d'hôtes haut de gamme.", "Online booking platform and premium showcase website for an exclusive guesthouse.") },
+    { img: resto, title: "Annonce Tunisie Tunisie", cat: "Immobilier", desc: t("Plateforme dynamique de recherche et de diffusion d'annonces immobilières ciblées en Tunisie.", "Dynamic platform for searching and publishing targeted real estate listings in Tunisia.") },
+    
   ];
-  const cats = ["Tous", "ERP", "E-commerce", "Mobile", "Corporate", "SaaS", "Restauration", "Social"];
+  const cats = ["Tous", "Corporate", "E-commerce", "Vitrine", "Dashboard", "Hébergement", "Immobilier"];
   const filtered = filter === "Tous" ? projects : projects.filter(p => p.cat === filter);
 
   return (
@@ -85,7 +85,7 @@ function PortfolioPage() {
                 whileHover={{ y: -10 }}
                 className="group relative rounded-2xl overflow-hidden bg-card shadow-card hover:shadow-glow transition block"
               >
-                <div className="aspect-[4/3] overflow-hidden relative">
+                <div className="overflow-hidden relative flex items-center justify-center bg-gray-100 p-2 min-h-[300px]">
                   <img
                     src={p.img}
                     alt={p.title}
