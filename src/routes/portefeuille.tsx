@@ -23,22 +23,33 @@ export const Route = createFileRoute("/portefeuille")({
   component: PortfolioPage,
 });
 
+// Clés de catégories (stables, indépendantes de la langue) + libellés FR/EN
+const CATEGORY_LABELS: Record<string, { fr: string; en: string }> = {
+  all: { fr: "Tous", en: "All" },
+  corporate: { fr: "Corporate", en: "Corporate" },
+  ecommerce: { fr: "E-commerce", en: "E-commerce" },
+  showcase: { fr: "Vitrine", en: "Showcase" },
+  dashboard: { fr: "Dashboard", en: "Dashboard" },
+  hosting: { fr: "Hébergement", en: "Hosting" },
+  realestate: { fr: "Immobilier", en: "Real Estate" },
+};
+
 function PortfolioPage() {
   const { t } = useT();
-  const [filter, setFilter] = useState("Tous");
+  const [filter, setFilter] = useState("all");
   const { open } = useQuote();
 
   const projects = [
-    { img: erp, title: "Séjour Médical", cat: "Corporate", desc: t("Plateforme vitrine et facilitateur de confiance pour le tourisme médical international.", "Showcase platform and trusted facilitator for international medical tourism.") },
-    { img: ecom, title: "RH Bâtiment", cat: "Vitrine", desc: t("Site vitrine professionnel mettant en valeur l'expertise et la gestion de projets de construction générale.", "Professional showcase website highlighting expertise and project management in general construction.") },
-    { img: mobile, title: "Dar B&B Admin", cat: "Dashboard", desc: t("Système de gestion intégrée (Back-office) pour piloter les réservations, les tarifs dynamiques, les codes promos et le calendrier des disponibilités.", "Integrated management system (Back-office) to control reservations, dynamic pricing, promo codes, and availability calendar.") },
-    { img: corp, title: "GEM by Gwenaëlle", cat: "E-commerce", desc: t("Boutique en ligne élégante dédiée à l'artisanat d'art, aux créations en macramé et accessoires faits main.", "Elegant online store dedicated to art crafts, macrame creations, and handmade accessories.") },
-    { img: saas, title: "Dar B&B", cat: "Hébergement", desc: t("Plateforme de réservation en ligne et vitrine d'exception pour une maison d'hôtes haut de gamme.", "Online booking platform and premium showcase website for an exclusive guesthouse.") },
-    { img: resto, title: "Annonce Tunisie Tunisie", cat: "Immobilier", desc: t("Plateforme dynamique de recherche et de diffusion d'annonces immobilières ciblées en Tunisie.", "Dynamic platform for searching and publishing targeted real estate listings in Tunisia.") },
-    
+    { img: erp, title: "Séjour Médical", cat: "corporate", desc: t("Plateforme vitrine et facilitateur de confiance pour le tourisme médical international.", "Showcase platform and trusted facilitator for international medical tourism.") },
+    { img: ecom, title: "RH Bâtiment", cat: "showcase", desc: t("Site vitrine professionnel mettant en valeur l'expertise et la gestion de projets de construction générale.", "Professional showcase website highlighting expertise and project management in general construction.") },
+    { img: mobile, title: "Dar B&B Admin", cat: "dashboard", desc: t("Système de gestion intégrée (Back-office) pour piloter les réservations, les tarifs dynamiques, les codes promos et le calendrier des disponibilités.", "Integrated management system (Back-office) to control reservations, dynamic pricing, promo codes, and availability calendar.") },
+    { img: corp, title: "GEM by Gwenaëlle", cat: "ecommerce", desc: t("Boutique en ligne élégante dédiée à l'artisanat d'art, aux créations en macramé et accessoires faits main.", "Elegant online store dedicated to art crafts, macrame creations, and handmade accessories.") },
+    { img: saas, title: "Dar B&B", cat: "hosting", desc: t("Plateforme de réservation en ligne et vitrine d'exception pour une maison d'hôtes haut de gamme.", "Online booking platform and premium showcase website for an exclusive guesthouse.") },
+    { img: resto, title: "Annonce Tunisie Tunisie", cat: "realestate", desc: t("Plateforme dynamique de recherche et de diffusion d'annonces immobilières ciblées en Tunisie.", "Dynamic platform for searching and publishing targeted real estate listings in Tunisia.") },
   ];
-  const cats = ["Tous", "Corporate", "E-commerce", "Vitrine", "Dashboard", "Hébergement", "Immobilier"];
-  const filtered = filter === "Tous" ? projects : projects.filter(p => p.cat === filter);
+
+  const cats = ["all", "corporate", "ecommerce", "showcase", "dashboard", "hosting", "realestate"];
+  const filtered = filter === "all" ? projects : projects.filter((p) => p.cat === filter);
 
   return (
     <>
@@ -68,7 +79,7 @@ function PortfolioPage() {
                     : "bg-card text-navy border border-border hover:border-orange hover:scale-105"
                 }`}
               >
-                {c === "Tous" ? t("Tous", "All") : c}
+                {t(CATEGORY_LABELS[c].fr, CATEGORY_LABELS[c].en)}
               </button>
             ))}
           </div>
@@ -98,7 +109,9 @@ function PortfolioPage() {
                   </div>
                 </div>
                 <div className="p-5">
-                  <div className="text-xs font-bold uppercase tracking-wider text-orange">{p.cat}</div>
+                  <div className="text-xs font-bold uppercase tracking-wider text-orange">
+                    {t(CATEGORY_LABELS[p.cat].fr, CATEGORY_LABELS[p.cat].en)}
+                  </div>
                   <h3 className="mt-1 font-display text-xl font-bold text-navy">{p.title}</h3>
                   <p className="mt-1.5 text-sm text-muted-foreground">{p.desc}</p>
                 </div>

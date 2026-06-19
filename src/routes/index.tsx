@@ -176,7 +176,7 @@ function HomePage() {
         <div className="flex overflow-hidden">
           <div className="flex gap-16 animate-marquee whitespace-nowrap">
             {[...Array(2)].flatMap((_, i) =>
-              ["NOVA", "TECHFLOW", "AXIOM", "PIXELLAB", "QUANTUM", "HORIZON", "STELLAR", "VERTEX"].map((b) => (
+              ["SEJOUR MEDICAL", "CNA", "DAR B&B", "Pauline Baudin ", "Annonce Tunisie Tunisie", "DIGILEARN", "Batiment RH", " Fleurs d'harmonie"].map((b) => (
                 <span key={`${i}-${b}`} className="text-2xl font-display font-bold text-navy/40 hover:text-orange transition">{b}</span>
               ))
             )}
