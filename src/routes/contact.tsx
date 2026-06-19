@@ -1,8 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, MessageCircle, Loader2 } from "lucide-react";
+import emailjs from "@emailjs/browser";
 import { useT } from "@/components/I18n";
+
+// 👉 Identifiants EmailJS (même service que le formulaire de devis)
+const EMAILJS_SERVICE_ID = "service_pn5w0yr";
+const EMAILJS_TEMPLATE_ID = "template_l20r7lb";
+const EMAILJS_PUBLIC_KEY = "kTsT5hKqJimHbnxMG";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -18,6 +24,8 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
   const { t } = useT();
 
   const infos = [
@@ -26,6 +34,42 @@ function ContactPage() {
     { icon: MapPin, label: t("Adresse", "Address"), value: t("Hammamet, Tunisie", "Hammamet, Tunisia") },
     { icon: Clock, label: t("Mode de travail", "Work mode"), value: t("100% télétravail · Lun – Ven", "100% remote · Mon – Fri") },
   ];
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(false);
+    setSending(true);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const templateParams = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      subject: formData.get("subject") as string,
+      message: formData.get("message") as string,
+      time: new Date().toLocaleString("fr-FR", {
+        dateStyle: "long",
+        timeStyle: "short",
+      }),
+    };
+
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        { publicKey: EMAILJS_PUBLIC_KEY }
+      );
+      setSent(true);
+      form.reset();
+    } catch (err) {
+      console.error("EmailJS error:", err);
+      setError(true);
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <>
@@ -90,7 +134,7 @@ function ContactPage() {
           </div>
 
           <motion.form
-            onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+            onSubmit={handleSubmit}
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
@@ -107,16 +151,38 @@ function ContactPage() {
               <>
                 <h2 className="font-display text-2xl font-bold text-navy">{t("Envoyez-nous un message", "Send us a message")}</h2>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <Input label={t("Nom", "Name")} required />
-                  <Input label={t("Email", "Email")} type="email" required />
+                  <Input label={t("Nom", "Name")} name="name" required />
+                  <Input label={t("Email", "Email")} name="email" type="email" required />
                 </div>
-                <Input label={t("Sujet", "Subject")} />
+                <Input label={t("Sujet", "Subject")} name="subject" />
                 <div>
                   <label className="text-sm font-medium text-navy block mb-1.5">{t("Message", "Message")} *</label>
-                  <textarea required rows={5} className="w-full rounded-lg border border-input bg-background px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-orange resize-none" />
+                  <textarea name="message" required rows={5} className="w-full rounded-lg border border-input bg-background px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-orange resize-none" />
                 </div>
-                <button type="submit" className="w-full bg-gradient-orange text-white font-semibold py-3.5 rounded-lg flex items-center justify-center gap-2 shadow-glow hover:scale-[1.01] transition">
-                  <Send size={18} /> {t("Envoyer", "Send")}
+
+                {error && (
+                  <p className="text-sm text-red-500">
+                    {t(
+                      "Une erreur est survenue lors de l'envoi. Merci de réessayer ou de nous contacter directement.",
+                      "Something went wrong while sending. Please try again or contact us directly."
+                    )}
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="w-full bg-gradient-orange text-white font-semibold py-3.5 rounded-lg flex items-center justify-center gap-2 shadow-glow hover:scale-[1.01] transition disabled:opacity-60 disabled:hover:scale-100"
+                >
+                  {sending ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" /> {t("Envoi en cours…", "Sending…")}
+                    </>
+                  ) : (
+                    <>
+                      <Send size={18} /> {t("Envoyer", "Send")}
+                    </>
+                  )}
                 </button>
               </>
             )}
@@ -127,11 +193,11 @@ function ContactPage() {
   );
 }
 
-function Input({ label, type = "text", required = false }: { label: string; type?: string; required?: boolean }) {
+function Input({ label, name, type = "text", required = false }: { label: string; name: string; type?: string; required?: boolean }) {
   return (
     <div>
       <label className="text-sm font-medium text-navy block mb-1.5">{label}{required && " *"}</label>
-      <input type={type} required={required} className="w-full rounded-lg border border-input bg-background px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-orange" />
+      <input name={name} type={type} required={required} className="w-full rounded-lg border border-input bg-background px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-orange" />
     </div>
   );
 }
