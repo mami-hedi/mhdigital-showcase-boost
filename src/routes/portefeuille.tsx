@@ -40,13 +40,13 @@ function PortfolioPage() {
   const { open } = useQuote();
 
   const projects = [
-    { img: erp, title: "Séjour Médical", cat: "corporate", desc: t("Plateforme vitrine et facilitateur de confiance pour le tourisme médical international.", "Showcase platform and trusted facilitator for international medical tourism.") },
-    { img: ecom, title: "RH Bâtiment", cat: "showcase", desc: t("Site vitrine professionnel mettant en valeur l'expertise et la gestion de projets de construction générale.", "Professional showcase website highlighting expertise and project management in general construction.") },
-    { img: mobile, title: "Dar B&B Admin", cat: "dashboard", desc: t("Système de gestion intégrée (Back-office) pour piloter les réservations, les tarifs dynamiques, les codes promos et le calendrier des disponibilités.", "Integrated management system (Back-office) to control reservations, dynamic pricing, promo codes, and availability calendar.") },
-    { img: corp, title: "GEM by Gwenaëlle", cat: "ecommerce", desc: t("Boutique en ligne élégante dédiée à l'artisanat d'art, aux créations en macramé et accessoires faits main.", "Elegant online store dedicated to art crafts, macrame creations, and handmade accessories.") },
-    { img: saas, title: "Dar B&B", cat: "hosting", desc: t("Plateforme de réservation en ligne et vitrine d'exception pour une maison d'hôtes haut de gamme.", "Online booking platform and premium showcase website for an exclusive guesthouse.") },
-    { img: resto, title: "Annonce Tunisie Tunisie", cat: "realestate", desc: t("Plateforme dynamique de recherche et de diffusion d'annonces immobilières ciblées en Tunisie.", "Dynamic platform for searching and publishing targeted real estate listings in Tunisia.") },
-  ];
+  { img: erp, title: "Séjour Médical", cat: "corporate", link: "https://www.sejour-medical.fr/", desc: t("Plateforme vitrine et facilitateur de confiance pour le tourisme médical international.", "Showcase platform and trusted facilitator for international medical tourism.") },
+  { img: ecom, title: "RH Bâtiment", cat: "showcase", link: null, desc: t("Site vitrine professionnel mettant en valeur l'expertise et la gestion de projets de construction générale.", "Professional showcase website highlighting expertise and project management in general construction.") },
+  { img: mobile, title: "Dar B&B Admin", cat: "dashboard", link: null, desc: t("Système de gestion intégrée (Back-office) pour piloter les réservations, les tarifs dynamiques, les codes promos et le calendrier des disponibilités.", "Integrated management system (Back-office) to control reservations, dynamic pricing, promo codes, and availability calendar.") },
+  { img: corp, title: "GEM by Gwenaëlle", cat: "ecommerce", link: "https://www.gembygwenaelle.fr/", desc: t("Boutique en ligne élégante dédiée à l'artisanat d'art, aux créations en macramé et accessoires faits main.", "Elegant online store dedicated to art crafts, macrame creations, and handmade accessories.") },
+  { img: saas, title: "Dar B&B", cat: "hosting", link: null, desc: t("Plateforme de réservation en ligne et vitrine d'exception pour une maison d'hôtes haut de gamme.", "Online booking platform and premium showcase website for an exclusive guesthouse.") },
+  { img: resto, title: "Annonce Tunisie Tunisie", cat: "realestate", link: "https://tunisie-immobilier-pro.vercel.app/", desc: t("Plateforme dynamique de recherche et de diffusion d'annonces immobilières ciblées en Tunisie.", "Dynamic platform for searching and publishing targeted real estate listings in Tunisia.") },
+];
 
   const cats = ["all", "corporate", "ecommerce", "showcase", "dashboard", "hosting", "realestate"];
   const filtered = filter === "all" ? projects : projects.filter((p) => p.cat === filter);
@@ -87,15 +87,17 @@ function PortfolioPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((p, i) => (
               <motion.a
-                key={p.title + i}
-                href="#"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ delay: i * 0.08, duration: 0.5 }}
-                whileHover={{ y: -10 }}
-                className="group relative rounded-2xl overflow-hidden bg-card shadow-card hover:shadow-glow transition block"
-              >
+  key={p.title + i}
+  href={p.link || "#"}
+  target={p.link ? "_blank" : undefined}
+  rel={p.link ? "noopener noreferrer" : undefined}
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, amount: 0.2 }}
+  transition={{ delay: i * 0.08, duration: 0.5 }}
+  whileHover={{ y: -10 }}
+  className="group relative rounded-2xl overflow-hidden bg-card shadow-card hover:shadow-glow transition block"
+>
                 <div className="overflow-hidden relative flex items-center justify-center bg-gray-100 p-2 min-h-[300px]">
                   <img
                     src={p.img}
