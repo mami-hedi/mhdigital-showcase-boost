@@ -8,6 +8,9 @@ import mobile from "@/assets/mockup_darbandb_admin.png";
 import corp from "@/assets/mockup_gem_gwenaelle.png";
 import saas from "@/assets/mockup_darbandb.png";
 import resto from "@/assets/mockup_annonce.png";
+import myl from "@/assets/mylieufr.webp";
+import ppgp from "@/assets/pauline.webp";
+import lcl from "@/assets/leclos.webp";
 import { useQuote } from "@/components/QuoteDialog";
 import { useT } from "@/components/I18n";
 
@@ -46,6 +49,9 @@ function PortfolioPage() {
   { img: corp, title: "GEM by Gwenaëlle", cat: "ecommerce", link: "https://www.gembygwenaelle.fr/", desc: t("Boutique en ligne élégante dédiée à l'artisanat d'art, aux créations en macramé et accessoires faits main.", "Elegant online store dedicated to art crafts, macrame creations, and handmade accessories.") },
   { img: saas, title: "Dar B&B", cat: "hosting", link: null, desc: t("Plateforme de réservation en ligne et vitrine d'exception pour une maison d'hôtes haut de gamme.", "Online booking platform and premium showcase website for an exclusive guesthouse.") },
   { img: resto, title: "Annonce Tunisie Tunisie", cat: "realestate", link: "https://tunisie-immobilier-pro.vercel.app/", desc: t("Plateforme dynamique de recherche et de diffusion d'annonces immobilières ciblées en Tunisie.", "Dynamic platform for searching and publishing targeted real estate listings in Tunisia.") },
+  { img: myl, title: "MyLieu", cat: "Showcase", link: "https://www.mylieu.fr/", desc: t("Site vitrine d'une agence d'architecture présentant un portfolio de projets de logements, bureaux, équipements et créations design sur mesure.", "Showcase website for an architecture studio presenting a portfolio of housing, office, public facility, and bespoke design projects.") },
+  { img: ppgp, title: "petits pieds grand pas", cat: "Showcase", link:"https://petitspiedsgrandpas.com/", desc: t("Site vitrine et de réservation pour une infirmière puéricultrice libérale, proposant accompagnement parental, portage physiologique et massage bébé.", "Showcase and booking website for a private pediatric nurse, offering parental support, physiological baby-wearing guidance, and baby massage sessions.") },
+  { img: lcl, title: "Le Clos Lacam", cat: "Showcase", link: "https://www.closlacam.fr/", desc: t("Site vitrine et de réservation pour des appartements meublés de tourisme 3 étoiles, installés dans une bâtisse historique au cœur médiéval de Gourdon.", "Showcase and booking website for 3-star furnished tourist apartments, set in a historic building in the medieval heart of Gourdon.") },
 ];
 
   const cats = ["all", "corporate", "ecommerce", "showcase", "dashboard", "hosting", "realestate"];
