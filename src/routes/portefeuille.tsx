@@ -10,7 +10,9 @@ import saas from "@/assets/mockup_darbandb.png";
 import resto from "@/assets/mockup_annonce.png";
 import myl from "@/assets/mylieufr.webp";
 import ppgp from "@/assets/pauline.webp";
+import aatt from "@/assets/admin-annonce.webp";
 import lcl from "@/assets/leclos.webp";
+import stecna from "@/assets/stecna.webp";
 import { useQuote } from "@/components/QuoteDialog";
 import { useT } from "@/components/I18n";
 
@@ -35,6 +37,7 @@ const CATEGORY_LABELS: Record<string, { fr: string; en: string }> = {
   dashboard: { fr: "Dashboard", en: "Dashboard" },
   hosting: { fr: "Hébergement", en: "Hosting" },
   realestate: { fr: "Immobilier", en: "Real Estate" },
+  ERP: { fr: "ERP", en: "ERP" },
 };
 
 function PortfolioPage() {
@@ -44,17 +47,23 @@ function PortfolioPage() {
 
   const projects = [
   { img: erp, title: "Séjour Médical", cat: "corporate", link: "https://www.sejour-medical.fr/", desc: t("Plateforme vitrine et facilitateur de confiance pour le tourisme médical international.", "Showcase platform and trusted facilitator for international medical tourism.") },
-  { img: ecom, title: "RH Bâtiment", cat: "showcase", link: null, desc: t("Site vitrine professionnel mettant en valeur l'expertise et la gestion de projets de construction générale.", "Professional showcase website highlighting expertise and project management in general construction.") },
+  { img: ecom, title: "RH Bâtiment", cat: "showcase", link: "https://batimentrh.tn/", desc: t("Site vitrine professionnel mettant en valeur l'expertise et la gestion de projets de construction générale.", "Professional showcase website highlighting expertise and project management in general construction.") },
   { img: mobile, title: "Dar B&B Admin", cat: "dashboard", link: null, desc: t("Système de gestion intégrée (Back-office) pour piloter les réservations, les tarifs dynamiques, les codes promos et le calendrier des disponibilités.", "Integrated management system (Back-office) to control reservations, dynamic pricing, promo codes, and availability calendar.") },
   { img: corp, title: "GEM by Gwenaëlle", cat: "ecommerce", link: "https://www.gembygwenaelle.fr/", desc: t("Boutique en ligne élégante dédiée à l'artisanat d'art, aux créations en macramé et accessoires faits main.", "Elegant online store dedicated to art crafts, macrame creations, and handmade accessories.") },
-  { img: saas, title: "Dar B&B", cat: "hosting", link: null, desc: t("Plateforme de réservation en ligne et vitrine d'exception pour une maison d'hôtes haut de gamme.", "Online booking platform and premium showcase website for an exclusive guesthouse.") },
+  { img: saas, title: "Dar B&B", cat: "hosting", link:"https://www.bnb-villa.com/", desc: t("Plateforme de réservation en ligne et vitrine d'exception pour une maison d'hôtes haut de gamme.", "Online booking platform and premium showcase website for an exclusive guesthouse.") },
   { img: resto, title: "Annonce Tunisie Tunisie", cat: "realestate", link: "https://tunisie-immobilier-pro.vercel.app/", desc: t("Plateforme dynamique de recherche et de diffusion d'annonces immobilières ciblées en Tunisie.", "Dynamic platform for searching and publishing targeted real estate listings in Tunisia.") },
   { img: myl, title: "MyLieu", cat: "showcase", link: "https://www.mylieu.fr/", desc: t("Site vitrine d'une agence d'architecture présentant un portfolio de projets de logements, bureaux, équipements et créations design sur mesure.", "Showcase website for an architecture studio presenting a portfolio of housing, office, public facility, and bespoke design projects.") },
   { img: ppgp, title: "petits pieds grand pas", cat: "showcase", link:"https://petitspiedsgrandpas.com/", desc: t("Site vitrine et de réservation pour une infirmière puéricultrice libérale, proposant accompagnement parental, portage physiologique et massage bébé.", "Showcase and booking website for a private pediatric nurse, offering parental support, physiological baby-wearing guidance, and baby massage sessions.") },
   { img: lcl, title: "Le Clos Lacam", cat: "showcase", link: "https://www.closlacam.fr/", desc: t("Site vitrine et de réservation pour des appartements meublés de tourisme 3 étoiles, installés dans une bâtisse historique au cœur médiéval de Gourdon.", "Showcase and booking website for 3-star furnished tourist apartments, set in a historic building in the medieval heart of Gourdon.") },
+  { img: stecna, title: "CNA", cat: "showcase", link: "https://www.ste-cna.tn/", desc: t(
+    "Site vitrine pour une entreprise tunisienne spécialisée dans la production industrielle d'aliments composés pour animaux, mettant en valeur ses produits et son expertise.", 
+    "Showcase website for a Tunisian company specializing in the industrial production of compound animal feed, highlighting its products and expertise."
+  ) },
+  { img: ppgp, title: "ERP CNA", cat: "ERP", link: null, desc: t("Site vitrine et de réservation pour une infirmière puéricultrice libérale, proposant accompagnement parental, portage physiologique et massage bébé.", "Showcase and booking website for a private pediatric nurse, offering parental support, physiological baby-wearing guidance, and baby massage sessions.") },
+  { img: aatt, title: "Annonce Tunisie Tunisie Admin", cat: "dashboard", link: null, desc: t("Tableau de bord d'administration pour la gestion complète d'une plateforme d'annonces immobilières en Tunisie (ventes, locations et statistiques de performance).", " Administration dashboard for the comprehensive management of a real estate classifieds platform in Tunisia (sales, rentals, and performance statistics).") },
 ];
 
-  const cats = ["all", "corporate", "ecommerce", "showcase", "dashboard", "hosting", "realestate"];
+  const cats = ["all", "corporate", "ecommerce", "showcase", "dashboard", "hosting", "realestate", "ERP"];
   const filtered = filter === "all" ? projects : projects.filter((p) => p.cat === filter);
 
   return (
