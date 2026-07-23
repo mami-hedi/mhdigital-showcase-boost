@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import erp from "@/assets/mockup_sejour_medical.png";
-import ecom from "@/assets/mockup_rh.png";
+import ecom from "@/assets/batimentrh.webp";
 import mobile from "@/assets/mockup_darbandb_admin.png";
 import corp from "@/assets/mockup_gem_gwenaelle.png";
 import saas from "@/assets/mockup_darbandb.png";
@@ -59,7 +59,7 @@ function PortfolioPage() {
     "Site vitrine pour une entreprise tunisienne spécialisée dans la production industrielle d'aliments composés pour animaux, mettant en valeur ses produits et son expertise.", 
     "Showcase website for a Tunisian company specializing in the industrial production of compound animal feed, highlighting its products and expertise."
   ) },
-  { img: ppgp, title: "ERP CNA", cat: "ERP", link: null, desc: t("Site vitrine et de réservation pour une infirmière puéricultrice libérale, proposant accompagnement parental, portage physiologique et massage bébé.", "Showcase and booking website for a private pediatric nurse, offering parental support, physiological baby-wearing guidance, and baby massage sessions.") },
+ { img: ppgp, title: "ERP CNA", cat: "ERP", link: null, desc: t("Projet de déploiement et personnalisation de l'ERP Odoo pour la Société Chok de Nutrition Animale (CNA).", "Odoo ERP deployment and customization project for Société Chok de Nutrition Animale (CNA).") },
   { img: aatt, title: "Annonce Tunisie Tunisie Admin", cat: "dashboard", link: null, desc: t("Tableau de bord d'administration pour la gestion complète d'une plateforme d'annonces immobilières en Tunisie (ventes, locations et statistiques de performance).", " Administration dashboard for the comprehensive management of a real estate classifieds platform in Tunisia (sales, rentals, and performance statistics).") },
 ];
 
