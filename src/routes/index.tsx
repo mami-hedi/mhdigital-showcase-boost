@@ -288,9 +288,21 @@ function HomePage() {
           <SectionHeader tag={t("Témoignages", "Testimonials")} title={t("La satisfaction de nos clients, notre plus belle vitrine", "Our clients' satisfaction is our finest showcase")} />
           <div className="mt-14 grid md:grid-cols-3 gap-6">
             {[
-              { name: "Karim B.", role: t("CEO, NovaTech", "CEO, NovaTech"), quote: t("MH Digital a transformé notre vision en une plateforme robuste. Un partenaire de confiance.", "MH Digital turned our vision into a rock-solid platform. A trusted partner.") },
-              { name: "Sara L.", role: t("Directrice, Boutique Atlas", "Director, Boutique Atlas"), quote: t("Notre e-commerce a doublé son CA en 6 mois grâce à leur expertise et leur écoute.", "Our e-commerce doubled revenue in 6 months thanks to their expertise.") },
-              { name: "Yassine R.", role: t("DAF, Groupe Horizon", "CFO, Horizon Group"), quote: t("L'ERP livré est exactement ce dont nous avions besoin. Équipe sérieuse et compétente.", "The delivered ERP is exactly what we needed. Serious, skilled team.") },
+              { 
+    name: "Selim", 
+    role: t("CEO, CNA", "CEO, CNA"), 
+    quote: t("MH Digital Solution a pris en charge la réalisation de notre site web et de notre ERP avec un grand professionnalisme. Un travail de haute qualité.", "MH Digital Solution handled the creation of our website and ERP with high professionalism. Outstanding quality work.") 
+  },
+  { 
+    name: "Hichem", 
+    role: t("Directeur Général, Bâtiment RH", "General Manager, Bâtiment RH"), 
+    quote: t("Une équipe très réactive et à l'écoute. Notre site vitrine reflète parfaitement l'image et l'expertise de notre entreprise.", "A very responsive and attentive team. Our showcase website perfectly reflects our company's image and expertise.") 
+  },
+  { 
+    name: "Seif", 
+    role: t("Propriétaire, Dar B&B", "Owner, Dar B&B"), 
+    quote: t("Le site web et l'espace d'administration sur-mesure facilitent énormément la gestion de nos réservations au quotidien.", "The custom website and admin panel make managing our daily bookings effortless.") 
+  },
             ].map((t2, i) => (
               <motion.div
                 key={t2.name}
