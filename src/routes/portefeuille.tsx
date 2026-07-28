@@ -13,6 +13,8 @@ import ppgp from "@/assets/pauline.webp";
 import aatt from "@/assets/admin-annonce.webp";
 import lcl from "@/assets/leclos.webp";
 import stecna from "@/assets/stecna.webp";
+import erpcna from "@/assets/erpcna.jpg";
+
 import { useQuote } from "@/components/QuoteDialog";
 import { useT } from "@/components/I18n";
 
@@ -59,7 +61,7 @@ function PortfolioPage() {
     "Site vitrine pour une entreprise tunisienne spécialisée dans la production industrielle d'aliments composés pour animaux, mettant en valeur ses produits et son expertise.", 
     "Showcase website for a Tunisian company specializing in the industrial production of compound animal feed, highlighting its products and expertise."
   ) },
- { img: ppgp, title: "ERP CNA", cat: "ERP", link: null, desc: t("Projet de déploiement et personnalisation de l'ERP Odoo pour la Société Chok de Nutrition Animale (CNA).", "Odoo ERP deployment and customization project for Société Chok de Nutrition Animale (CNA).") },
+ { img: erpcna, title: "ERP CNA", cat: "ERP", link: null, desc: t("Projet de déploiement et personnalisation de l'ERP Odoo pour la Société Chok de Nutrition Animale (CNA).", "Odoo ERP deployment and customization project for Société Chok de Nutrition Animale (CNA).") },
   { img: aatt, title: "Annonce Tunisie Tunisie Admin", cat: "dashboard", link: null, desc: t("Tableau de bord d'administration pour la gestion complète d'une plateforme d'annonces immobilières en Tunisie (ventes, locations et statistiques de performance).", " Administration dashboard for the comprehensive management of a real estate classifieds platform in Tunisia (sales, rentals, and performance statistics).") },
 ];
 
