@@ -1,14 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, MessageCircle, Loader2 } from "lucide-react";
-import emailjs from "@emailjs/browser";
+import { Mail, Phone, MapPin, Clock, MessageCircle, ChevronDown, HelpCircle } from "lucide-react";
 import { useT } from "@/components/I18n";
-
-// 👉 Identifiants EmailJS (même service que le formulaire de devis)
-const EMAILJS_SERVICE_ID = "service_pn5w0yr";
-const EMAILJS_TEMPLATE_ID = "template_l20r7lb";
-const EMAILJS_PUBLIC_KEY = "kTsT5hKqJimHbnxMG";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -23,10 +17,8 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
-  const [sent, setSent] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState(false);
   const { t } = useT();
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   const infos = [
     { icon: Mail, label: t("Email", "Email"), value: "contact@mh-digital-solution.com", href: "mailto:contact@mh-digital-solution.com" },
@@ -35,40 +27,39 @@ function ContactPage() {
     { icon: Clock, label: t("Mode de travail", "Work mode"), value: t("100% télétravail · Lun – Ven", "100% remote · Mon – Fri") },
   ];
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError(false);
-    setSending(true);
+  const faqs = [
+    {
+      q: t("Quels sont vos délais moyens de réalisation ?", "What are your average delivery times?"),
+      a: t(
+        "Les délais varient selon le projet : comptez environ 2 à 3 semaines pour un site vitrine / sur mesure, et 4 à 8 semaines pour un projet ERP / CRM ou une application complexe.",
+        "Timelines depend on project complexity: count about 2-3 weeks for a custom showcase website, and 4-8 weeks for ERP/CRM systems or custom web applications."
+      ),
+    },
+    {
+      q: t("Comment se déroule un projet avec vous ?", "How does a project work with your team?"),
+      a: t(
+        "Nous suivons une méthodologie claire : analyse du besoin & cahier des charges, conception UI/UX, développement, tests et déploiement final avec formation.",
+        "We follow a clear methodology: requirements discovery & specifications, UI/UX design, core development, testing, and final deployment with user training."
+      ),
+    },
+    {
+      q: t("Proposez-vous une assistance et maintenance après livraison ?", "Do you offer post-launch support and maintenance?"),
+      a: t(
+        "Oui, tous nos projets incluent une garantie et une période d'accompagnement post-lancement. Nous proposons également des contrats de maintenance évolutive.",
+        "Yes, all our projects include a post-launch support period. We also offer ongoing maintenance contracts for updates and performance optimization."
+      ),
+    },
+    {
+      q: t("Quelles sont vos technologies de prédilection ?", "What technologies do you specialize in?"),
+      a: t(
+        "Nous sommes experts en développement web moderne (React, Next.js, Node.js, TypeScript), CMS WordPress sur mesure et intégration d'ERP/CRM (Odoo).",
+        "We specialize in modern web technologies (React, Next.js, Node.js, TypeScript), custom WordPress development, and ERP/CRM integration (Odoo)."
+      ),
+    },
+  ];
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
-    const templateParams = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      subject: formData.get("subject") as string,
-      message: formData.get("message") as string,
-      time: new Date().toLocaleString("fr-FR", {
-        dateStyle: "long",
-        timeStyle: "short",
-      }),
-    };
-
-    try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        templateParams,
-        { publicKey: EMAILJS_PUBLIC_KEY }
-      );
-      setSent(true);
-      form.reset();
-    } catch (err) {
-      console.error("EmailJS error:", err);
-      setError(true);
-    } finally {
-      setSending(false);
-    }
+  const toggleFaq = (index: number) => {
+    setOpenFaqIndex(openFaqIndex === index ? null : index);
   };
 
   return (
@@ -84,6 +75,7 @@ function ContactPage() {
 
       <section className="py-20">
         <div className="max-w-6xl mx-auto px-5 lg:px-8 grid lg:grid-cols-5 gap-10">
+          {/* Colonne de gauche : Infos & WhatsApp */}
           <div className="lg:col-span-2 space-y-5">
             {infos.map((info, i) => (
               <motion.div
@@ -100,19 +92,19 @@ function ContactPage() {
                 </div>
                 <div>
                   <div className="font-bold text-navy">{info.label}</div>
-                 <div> {info.href ? (
-                   
-                    <a href={info.href}
-                     className="text-sm text-muted-foreground mt-0.5 hover:text-orange transition block"
-                   >
-                     {info.value}
-                   </a>
-                 ) : (
-                  <div className="text-sm text-muted-foreground mt-0.5">{info.value}</div>
-                 )}</div>
+                  <div>
+                    {info.href ? (
+                      <a href={info.href} className="text-sm text-muted-foreground mt-0.5 hover:text-orange transition block">
+                        {info.value}
+                      </a>
+                    ) : (
+                      <div className="text-sm text-muted-foreground mt-0.5">{info.value}</div>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             ))}
+
             <motion.a
               href="https://wa.me/21658146177"
               target="_blank"
@@ -133,71 +125,81 @@ function ContactPage() {
             </motion.a>
           </div>
 
-          <motion.form
-            onSubmit={handleSubmit}
+          {/* Colonne de droite : FAQ bilingue */}
+          <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-3 bg-card p-8 rounded-2xl shadow-card border border-border space-y-4"
+            className="lg:col-span-3 bg-card p-8 rounded-2xl shadow-card border border-border flex flex-col justify-between space-y-6"
           >
-            {sent ? (
-              <div className="text-center py-12">
-                <CheckCircle2 className="mx-auto text-orange" size={64} />
-                <h3 className="mt-4 text-2xl font-bold text-navy">{t("Message envoyé !", "Message sent!")}</h3>
-                <p className="mt-2 text-muted-foreground">{t("Nous reviendrons vers vous très vite.", "We'll get back to you very soon.")}</p>
-              </div>
-            ) : (
-              <>
-                <h2 className="font-display text-2xl font-bold text-navy">{t("Envoyez-nous un message", "Send us a message")}</h2>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <Input label={t("Nom", "Name")} name="name" required />
-                  <Input label={t("Email", "Email")} name="email" type="email" required />
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-orange/10 flex items-center justify-center text-orange flex-shrink-0">
+                  <HelpCircle size={22} />
                 </div>
-                <Input label={t("Sujet", "Subject")} name="subject" />
                 <div>
-                  <label className="text-sm font-medium text-navy block mb-1.5">{t("Message", "Message")} *</label>
-                  <textarea name="message" required rows={5} className="w-full rounded-lg border border-input bg-background px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-orange resize-none" />
-                </div>
-
-                {error && (
-                  <p className="text-sm text-red-500">
-                    {t(
-                      "Une erreur est survenue lors de l'envoi. Merci de réessayer ou de nous contacter directement.",
-                      "Something went wrong while sending. Please try again or contact us directly."
-                    )}
+                  <h2 className="font-display text-2xl font-bold text-navy">
+                    {t("Questions fréquentes", "Frequently Asked Questions")}
+                  </h2>
+                  <p className="text-sm text-muted-foreground mt-0.5">
+                    {t("Trouvez rapidement des réponses à vos questions.", "Find quick answers to common questions.")}
                   </p>
-                )}
+                </div>
+              </div>
 
-                <button
-                  type="submit"
-                  disabled={sending}
-                  className="w-full bg-gradient-orange text-white font-semibold py-3.5 rounded-lg flex items-center justify-center gap-2 shadow-glow hover:scale-[1.01] transition disabled:opacity-60 disabled:hover:scale-100"
-                >
-                  {sending ? (
-                    <>
-                      <Loader2 size={18} className="animate-spin" /> {t("Envoi en cours…", "Sending…")}
-                    </>
-                  ) : (
-                    <>
-                      <Send size={18} /> {t("Envoyer", "Send")}
-                    </>
-                  )}
-                </button>
-              </>
-            )}
-          </motion.form>
+              <div className="space-y-3">
+                {faqs.map((faq, i) => {
+                  const isOpen = openFaqIndex === i;
+                  return (
+                    <div key={i} className="border border-border rounded-xl overflow-hidden transition-colors">
+                      <button
+                        type="button"
+                        onClick={() => toggleFaq(i)}
+                        className="w-full p-4 text-left font-bold text-navy flex justify-between items-center bg-background/50 hover:bg-background transition"
+                      >
+                        <span className="text-sm md:text-base pr-3">{faq.q}</span>
+                        <ChevronDown
+                          size={18}
+                          className={`text-muted-foreground shrink-0 transition-transform duration-300 ${
+                            isOpen ? "rotate-180 text-orange" : ""
+                          }`}
+                        />
+                      </button>
+
+                      <AnimatePresence>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="p-4 pt-0 text-sm text-muted-foreground border-t border-border/50 leading-relaxed bg-card">
+                              {faq.a}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Banner bas de FAQ */}
+            <div className="p-4 rounded-xl bg-orange/5 border border-orange/20 text-center">
+              <p className="text-sm font-semibold text-navy">
+                {t("Vous avez une question spécifique ?", "Have a specific question?")}
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {t("Contactez-nous directement sur WhatsApp pour une réponse rapide.", "Contact us directly on WhatsApp for an instant answer.")}
+              </p>
+            </div>
+          </motion.div>
         </div>
       </section>
     </>
-  );
-}
-
-function Input({ label, name, type = "text", required = false }: { label: string; name: string; type?: string; required?: boolean }) {
-  return (
-    <div>
-      <label className="text-sm font-medium text-navy block mb-1.5">{label}{required && " *"}</label>
-      <input name={name} type={type} required={required} className="w-full rounded-lg border border-input bg-background px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-orange" />
-    </div>
   );
 }
