@@ -9,25 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ServicesRouteImport } from './routes/services'
-import { Route as PortefeuilleRouteImport } from './routes/portefeuille'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as AProposRouteImport } from './routes/a-propos'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AProposRouteImport } from './routes/a-propos'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as PortefeuilleRouteImport } from './routes/portefeuille'
+import { Route as ServicesRouteImport } from './routes/services'
 
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PortefeuilleRoute = PortefeuilleRouteImport.update({
-  id: '/portefeuille',
-  path: '/portefeuille',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AProposRoute = AProposRouteImport.update({
@@ -35,9 +25,19 @@ const AProposRoute = AProposRouteImport.update({
   path: '/a-propos',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortefeuilleRoute = PortefeuilleRouteImport.update({
+  id: '/portefeuille',
+  path: '/portefeuille',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -69,12 +69,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/a-propos' | '/contact' | '/portefeuille' | '/services'
   id:
-    | '__root__'
-    | '/'
-    | '/a-propos'
-    | '/contact'
-    | '/portefeuille'
-    | '/services'
+    '__root__' | '/' | '/a-propos' | '/contact' | '/portefeuille' | '/services'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -87,25 +82,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/portefeuille': {
-      id: '/portefeuille'
-      path: '/portefeuille'
-      fullPath: '/portefeuille'
-      preLoaderRoute: typeof PortefeuilleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/a-propos': {
@@ -115,11 +96,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AProposRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portefeuille': {
+      id: '/portefeuille'
+      path: '/portefeuille'
+      fullPath: '/portefeuille'
+      preLoaderRoute: typeof PortefeuilleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
