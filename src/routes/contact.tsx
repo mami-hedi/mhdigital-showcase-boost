@@ -28,35 +28,68 @@ function ContactPage() {
   ];
 
   const faqs = [
-    {
-      q: t("Quels sont vos délais moyens de réalisation ?", "What are your average delivery times?"),
-      a: t(
-        "Les délais varient selon le projet : comptez environ 2 à 3 semaines pour un site vitrine / sur mesure, et 4 à 8 semaines pour un projet ERP / CRM ou une application complexe.",
-        "Timelines depend on project complexity: count about 2-3 weeks for a custom showcase website, and 4-8 weeks for ERP/CRM systems or custom web applications."
-      ),
-    },
-    {
-      q: t("Comment se déroule un projet avec vous ?", "How does a project work with your team?"),
-      a: t(
-        "Nous suivons une méthodologie claire : analyse du besoin & cahier des charges, conception UI/UX, développement, tests et déploiement final avec formation.",
-        "We follow a clear methodology: requirements discovery & specifications, UI/UX design, core development, testing, and final deployment with user training."
-      ),
-    },
-    {
-      q: t("Proposez-vous une assistance et maintenance après livraison ?", "Do you offer post-launch support and maintenance?"),
-      a: t(
-        "Oui, tous nos projets incluent une garantie et une période d'accompagnement post-lancement. Nous proposons également des contrats de maintenance évolutive.",
-        "Yes, all our projects include a post-launch support period. We also offer ongoing maintenance contracts for updates and performance optimization."
-      ),
-    },
-    {
-      q: t("Quelles sont vos technologies de prédilection ?", "What technologies do you specialize in?"),
-      a: t(
-        "Nous sommes experts en développement web moderne (React, Next.js, Node.js, TypeScript), CMS WordPress sur mesure et intégration d'ERP/CRM (Odoo).",
-        "We specialize in modern web technologies (React, Next.js, Node.js, TypeScript), custom WordPress development, and ERP/CRM integration (Odoo)."
-      ),
-    },
-  ];
+  {
+    q: t(
+      "Quels sont vos délais de réalisation ?",
+      "What are your project delivery timelines?"
+    ),
+    a: t(
+      "Les délais dépendent de la complexité et des besoins de votre projet. À titre indicatif, un site vitrine peut être réalisé en 2 à 3 semaines, tandis qu'une application web ou un projet ERP/CRM nécessite généralement 4 à 8 semaines, voire davantage selon son périmètre.",
+      "Timelines depend on your project's complexity and requirements. As a general guideline, a showcase website can take 2–3 weeks, while a web application or ERP/CRM project typically takes 4–8 weeks or longer depending on its scope."
+    ),
+  },
+  {
+    q: t(
+      "Comment se déroule un projet avec votre agence ?",
+      "How does a project work with your agency?"
+    ),
+    a: t(
+      "Chaque projet suit une méthodologie structurée : analyse de vos besoins, définition des objectifs, conception UI/UX, développement, tests et mise en production. Nous vous accompagnons à chaque étape afin de garantir un résultat aligné avec vos objectifs.",
+      "Every project follows a structured process: requirements analysis, goal definition, UI/UX design, development, testing, and deployment. We guide you through every stage to ensure the final solution aligns with your business objectives."
+    ),
+  },
+  {
+    q: t(
+      "Proposez-vous un accompagnement après la livraison ?",
+      "Do you offer support after project delivery?"
+    ),
+    a: t(
+      "Oui. Nous assurons un accompagnement après la mise en production et proposons des solutions de maintenance adaptées à vos besoins : corrections, mises à jour, suivi des performances et évolutions fonctionnelles. Les modalités et la durée de l'accompagnement sont définies selon votre projet.",
+      "Yes. We provide post-launch support and offer maintenance solutions tailored to your needs, including bug fixes, updates, performance monitoring, and new features. Support terms and duration are defined according to your project."
+    ),
+  },
+  {
+    q: t(
+      "Quelles technologies utilisez-vous ?",
+      "Which technologies do you use?"
+    ),
+    a: t(
+      "Nous utilisons des technologies modernes et éprouvées, notamment React, Next.js, Node.js et TypeScript pour le développement web, WordPress pour les sites administrables, ainsi qu'Odoo pour les solutions ERP/CRM. Nous choisissons les technologies les plus adaptées à vos objectifs, à votre budget et à vos besoins d'évolution.",
+      "We use modern, proven technologies, including React, Next.js, Node.js, and TypeScript for web development, WordPress for content-managed websites, and Odoo for ERP/CRM solutions. We select the technologies best suited to your goals, budget, and long-term needs."
+    ),
+  },
+  {
+    q: t(
+      "Quels types de projets pouvez-vous réaliser ?",
+      "What types of projects can you deliver?"
+    ),
+    a: t(
+      "Nous accompagnons les entreprises dans la création de sites web, d'applications sur mesure, de plateformes digitales et de solutions ERP/CRM. Nous intervenons également sur l'automatisation des processus métier et l'intégration d'outils pour améliorer la productivité.",
+      "We help businesses build websites, custom applications, digital platforms, and ERP/CRM solutions. We also automate business processes and integrate tools to improve productivity."
+    ),
+  },
+  {
+    q: t(
+      "Comment obtenir un devis pour mon projet ?",
+      "How can I get a quote for my project?"
+    ),
+    a: t(
+      "Contactez-nous en présentant votre projet, vos objectifs et vos principales attentes. Après un premier échange, nous étudions vos besoins et vous proposons une solution adaptée, accompagnée d'une estimation du budget et des délais.",
+      "Get in touch and tell us about your project, goals, and main requirements. After an initial discussion, we assess your needs and propose a tailored solution with an estimated budget and timeline."
+    ),
+  },
+];
+
 
   const toggleFaq = (index: number) => {
     setOpenFaqIndex(openFaqIndex === index ? null : index);
