@@ -1,18 +1,99 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { Mail, Phone, MapPin, Clock, MessageCircle, ChevronDown, HelpCircle } from "lucide-react";
 import { useT } from "@/components/I18n";
+import { seo, breadcrumb, faqPage, SITE } from "@/lib/seo";
+
+// Source unique de la FAQ : sert à l'affichage (FR/EN) ET au JSON-LD (FR)
+const FAQ_DATA = [
+  {
+    q: {
+      fr: "Quels sont vos délais de réalisation ?",
+      en: "What are your project delivery timelines?",
+    },
+    a: {
+      fr: "Les délais dépendent de la complexité et des besoins de votre projet. À titre indicatif, un site vitrine peut être réalisé en 2 à 3 semaines, tandis qu'une application web ou un projet ERP/CRM nécessite généralement 4 à 8 semaines, voire davantage selon son périmètre.",
+      en: "Timelines depend on your project's complexity and requirements. As a general guideline, a showcase website can take 2–3 weeks, while a web application or ERP/CRM project typically takes 4–8 weeks or longer depending on its scope.",
+    },
+  },
+  {
+    q: {
+      fr: "Comment se déroule un projet avec votre agence ?",
+      en: "How does a project work with your agency?",
+    },
+    a: {
+      fr: "Chaque projet suit une méthodologie structurée : analyse de vos besoins, définition des objectifs, conception UI/UX, développement, tests et mise en production. Nous vous accompagnons à chaque étape afin de garantir un résultat aligné avec vos objectifs.",
+      en: "Every project follows a structured process: requirements analysis, goal definition, UI/UX design, development, testing, and deployment. We guide you through every stage to ensure the final solution aligns with your business objectives.",
+    },
+  },
+  {
+    q: {
+      fr: "Proposez-vous un accompagnement après la livraison ?",
+      en: "Do you offer support after project delivery?",
+    },
+    a: {
+      fr: "Oui. Nous assurons un accompagnement après la mise en production et proposons des solutions de maintenance adaptées à vos besoins : corrections, mises à jour, suivi des performances et évolutions fonctionnelles. Les modalités et la durée de l'accompagnement sont définies selon votre projet.",
+      en: "Yes. We provide post-launch support and offer maintenance solutions tailored to your needs, including bug fixes, updates, performance monitoring, and new features. Support terms and duration are defined according to your project.",
+    },
+  },
+  {
+    q: {
+      fr: "Quelles technologies utilisez-vous ?",
+      en: "Which technologies do you use?",
+    },
+    a: {
+      fr: "Nous utilisons des technologies modernes et éprouvées, notamment React, Next.js, Node.js et TypeScript pour le développement web, WordPress pour les sites administrables, ainsi qu'Odoo pour les solutions ERP/CRM. Nous choisissons les technologies les plus adaptées à vos objectifs, à votre budget et à vos besoins d'évolution.",
+      en: "We use modern, proven technologies, including React, Next.js, Node.js, and TypeScript for web development, WordPress for content-managed websites, and Odoo for ERP/CRM solutions. We select the technologies best suited to your goals, budget, and long-term needs.",
+    },
+  },
+  {
+    q: {
+      fr: "Quels types de projets pouvez-vous réaliser ?",
+      en: "What types of projects can you deliver?",
+    },
+    a: {
+      fr: "Nous accompagnons les entreprises dans la création de sites web, d'applications sur mesure, de plateformes digitales et de solutions ERP/CRM. Nous intervenons également sur l'automatisation des processus métier et l'intégration d'outils pour améliorer la productivité.",
+      en: "We help businesses build websites, custom applications, digital platforms, and ERP/CRM solutions. We also automate business processes and integrate tools to improve productivity.",
+    },
+  },
+  {
+    q: {
+      fr: "Comment obtenir un devis pour mon projet ?",
+      en: "How can I get a quote for my project?",
+    },
+    a: {
+      fr: "Contactez-nous en présentant votre projet, vos objectifs et vos principales attentes. Après un premier échange, nous étudions vos besoins et vous proposons une solution adaptée, accompagnée d'une estimation du budget et des délais.",
+      en: "Get in touch and tell us about your project, goals, and main requirements. After an initial discussion, we assess your needs and propose a tailored solution with an estimated budget and timeline.",
+    },
+  },
+];
+
+// Version française pour le schéma FAQPage
+const FAQ_FR = FAQ_DATA.map((f) => ({ q: f.q.fr, a: f.a.fr }));
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact — MH Digital Solution" },
-      { name: "description", content: "Contactez MH Digital Solution à Hammamet, Tunisie. 100% télétravail. Téléphone & WhatsApp : +216 58 146 177." },
-      { property: "og:title", content: "Contact — MH Digital Solution" },
-      { property: "og:description", content: "Let's talk about your project." },
-    ],
-  }),
+  head: () =>
+    seo({
+      title: "Contact et devis gratuit sous 24h | MH Digital Solution",
+      description:
+        "Demandez votre devis gratuit : email, téléphone ou WhatsApp au +216 58 146 177. Agence digitale à Hammamet, Tunisie. Réponse sous 24h.",
+      path: "/contact",
+      jsonLd: [
+        breadcrumb([
+          { name: "Accueil", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ]),
+        {
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          url: `${SITE}/contact`,
+          name: "Contacter MH Digital Solution",
+          about: { "@id": `${SITE}/#organization` },
+        },
+        faqPage(FAQ_FR),
+      ],
+    }),
   component: ContactPage,
 });
 
@@ -27,69 +108,10 @@ function ContactPage() {
     { icon: Clock, label: t("Mode de travail", "Work mode"), value: t("100% télétravail · Lun – Ven", "100% remote · Mon – Fri") },
   ];
 
-  const faqs = [
-  {
-    q: t(
-      "Quels sont vos délais de réalisation ?",
-      "What are your project delivery timelines?"
-    ),
-    a: t(
-      "Les délais dépendent de la complexité et des besoins de votre projet. À titre indicatif, un site vitrine peut être réalisé en 2 à 3 semaines, tandis qu'une application web ou un projet ERP/CRM nécessite généralement 4 à 8 semaines, voire davantage selon son périmètre.",
-      "Timelines depend on your project's complexity and requirements. As a general guideline, a showcase website can take 2–3 weeks, while a web application or ERP/CRM project typically takes 4–8 weeks or longer depending on its scope."
-    ),
-  },
-  {
-    q: t(
-      "Comment se déroule un projet avec votre agence ?",
-      "How does a project work with your agency?"
-    ),
-    a: t(
-      "Chaque projet suit une méthodologie structurée : analyse de vos besoins, définition des objectifs, conception UI/UX, développement, tests et mise en production. Nous vous accompagnons à chaque étape afin de garantir un résultat aligné avec vos objectifs.",
-      "Every project follows a structured process: requirements analysis, goal definition, UI/UX design, development, testing, and deployment. We guide you through every stage to ensure the final solution aligns with your business objectives."
-    ),
-  },
-  {
-    q: t(
-      "Proposez-vous un accompagnement après la livraison ?",
-      "Do you offer support after project delivery?"
-    ),
-    a: t(
-      "Oui. Nous assurons un accompagnement après la mise en production et proposons des solutions de maintenance adaptées à vos besoins : corrections, mises à jour, suivi des performances et évolutions fonctionnelles. Les modalités et la durée de l'accompagnement sont définies selon votre projet.",
-      "Yes. We provide post-launch support and offer maintenance solutions tailored to your needs, including bug fixes, updates, performance monitoring, and new features. Support terms and duration are defined according to your project."
-    ),
-  },
-  {
-    q: t(
-      "Quelles technologies utilisez-vous ?",
-      "Which technologies do you use?"
-    ),
-    a: t(
-      "Nous utilisons des technologies modernes et éprouvées, notamment React, Next.js, Node.js et TypeScript pour le développement web, WordPress pour les sites administrables, ainsi qu'Odoo pour les solutions ERP/CRM. Nous choisissons les technologies les plus adaptées à vos objectifs, à votre budget et à vos besoins d'évolution.",
-      "We use modern, proven technologies, including React, Next.js, Node.js, and TypeScript for web development, WordPress for content-managed websites, and Odoo for ERP/CRM solutions. We select the technologies best suited to your goals, budget, and long-term needs."
-    ),
-  },
-  {
-    q: t(
-      "Quels types de projets pouvez-vous réaliser ?",
-      "What types of projects can you deliver?"
-    ),
-    a: t(
-      "Nous accompagnons les entreprises dans la création de sites web, d'applications sur mesure, de plateformes digitales et de solutions ERP/CRM. Nous intervenons également sur l'automatisation des processus métier et l'intégration d'outils pour améliorer la productivité.",
-      "We help businesses build websites, custom applications, digital platforms, and ERP/CRM solutions. We also automate business processes and integrate tools to improve productivity."
-    ),
-  },
-  {
-    q: t(
-      "Comment obtenir un devis pour mon projet ?",
-      "How can I get a quote for my project?"
-    ),
-    a: t(
-      "Contactez-nous en présentant votre projet, vos objectifs et vos principales attentes. Après un premier échange, nous étudions vos besoins et vous proposons une solution adaptée, accompagnée d'une estimation du budget et des délais.",
-      "Get in touch and tell us about your project, goals, and main requirements. After an initial discussion, we assess your needs and propose a tailored solution with an estimated budget and timeline."
-    ),
-  },
-];
-
+  const faqs = FAQ_DATA.map((f) => ({
+    q: t(f.q.fr, f.q.en),
+    a: t(f.a.fr, f.a.en),
+  }));
 
   const toggleFaq = (index: number) => {
     setOpenFaqIndex(openFaqIndex === index ? null : index);
@@ -189,6 +211,8 @@ function ContactPage() {
                       <button
                         type="button"
                         onClick={() => toggleFaq(i)}
+                        aria-expanded={isOpen}
+                        aria-controls={`faq-panel-${i}`}
                         className="w-full p-4 text-left font-bold text-navy flex justify-between items-center bg-background/50 hover:bg-background transition"
                       >
                         <span className="text-sm md:text-base pr-3">{faq.q}</span>
@@ -200,21 +224,21 @@ function ContactPage() {
                         />
                       </button>
 
-                      <AnimatePresence>
-                        {isOpen && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.25 }}
-                            className="overflow-hidden"
-                          >
-                            <div className="p-4 pt-0 text-sm text-muted-foreground border-t border-border/50 leading-relaxed bg-card">
-                              {faq.a}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                      {/* Les réponses restent TOUJOURS dans le HTML (lisibles par Google et les IA).
+                          Seule la hauteur change : 0fr = fermé, 1fr = ouvert. */}
+                      <div
+                        id={`faq-panel-${i}`}
+                        role="region"
+                        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                          isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                        }`}
+                      >
+                        <div className="overflow-hidden">
+                          <div className="p-4 pt-3 text-sm text-muted-foreground border-t border-border/50 leading-relaxed bg-card">
+                            {faq.a}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   );
                 })}

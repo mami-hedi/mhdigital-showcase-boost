@@ -1,0 +1,24 @@
+# MH Digital Solution
+
+> Agence digitale basée à Hammamet (Tunisie), travaillant en 100 % télétravail. Spécialisée en création de sites web sur mesure, e-commerce, ERP/CRM (Odoo), logiciels métier, applications mobiles et community management (Facebook, Instagram). Clients en Tunisie et en France.
+
+## Pages principales
+- [Accueil](https://www.mh-digital-solution.com/): présentation de l'agence et de ses services
+- [Services](https://www.mh-digital-solution.com/services): sites web, e-commerce, ERP & CRM, logiciels métier, applications mobiles, community management, refonte et SEO
+- [Portefeuille](https://www.mh-digital-solution.com/portefeuille): projets réalisés (sites vitrines, e-commerce, plateformes de réservation, ERP Odoo, dashboards)
+- [À propos](https://www.mh-digital-solution.com/a-propos): équipe, valeurs et méthode de travail
+- [Contact](https://www.mh-digital-solution.com/contact): devis gratuit sous 24h et questions fréquentes
+
+## Informations clés
+- Nom : MH Digital Solution
+- Localisation : Hammamet, Tunisie
+- Email : contact@mh-digital-solution.com
+- Téléphone / WhatsApp : +216 58 146 177
+- Langues : français, anglais
+- Technologies : React, Next.js, Node.js, TypeScript, WordPress, Odoo
+- Délais indicatifs : site vitrine 2 à 3 semaines ; application web ou ERP/CRM 4 à 8 semaines
+
+## Réseaux
+- [LinkedIn](https://www.linkedin.com/company/mhdigitalsolution)
+- [Facebook](https://www.facebook.com/profile.php?id=61558644863951)
+- [Instagram](https://www.instagram.com/mhdigitalsolution/)

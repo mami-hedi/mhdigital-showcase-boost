@@ -7,16 +7,48 @@ import {
 } from "lucide-react";
 import { useQuote } from "@/components/QuoteDialog";
 import { useT } from "@/components/I18n";
+import { seo, breadcrumb, faqPage, SITE } from "@/lib/seo";
 
+const SERVICES = [
+  ["Création de sites web sur mesure", "Sites vitrines, corporate et portfolios : design unique, SEO, responsive et CMS."],
+  ["Sites e-commerce", "Boutiques en ligne : paiement, gestion de stock et de commandes, marketing, tableaux de bord."],
+  ["ERP & CRM (Odoo)", "Déploiement et personnalisation d'ERP/CRM : comptabilité, facturation, ventes, RH, reporting."],
+  ["Logiciels métier sur mesure", "Outils internes, automatisation, workflows, API et intégrations tierces."],
+  ["Applications mobiles iOS et Android", "Applications natives ou cross-platform (React Native, Flutter)."],
+  ["Community management", "Gestion Facebook et Instagram : stratégie éditoriale, visuels, publications, reporting."],
+  ["Refonte, SEO et maintenance", "Audit technique et UX, refonte progressive, SEO on-page et technique, maintenance."],
+];
+ 
 export const Route = createFileRoute("/services")({
-  head: () => ({
-    meta: [
-      { title: "Services — MH Digital Solution" },
-      { name: "description", content: "Sites web, e-commerce, ERP, CRM, logiciels métier, applications mobiles et community management Facebook/Instagram." },
-      { property: "og:title", content: "Our services — MH Digital Solution" },
-      { property: "og:description", content: "All our digital expertise at a glance." },
-    ],
-  }),
+  head: () =>
+    seo({
+      title: "Services web, ERP, e-commerce et mobile en Tunisie | MH Digital",
+      description:
+        "Création de sites web, e-commerce, ERP/CRM Odoo, logiciels métier, applications mobiles et community management. Agence digitale à Hammamet, Tunisie.",
+      path: "/services",
+      jsonLd: [
+        breadcrumb([
+          { name: "Accueil", path: "/" },
+          { name: "Services", path: "/services" },
+        ]),
+        {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "Services de MH Digital Solution",
+          itemListElement: SERVICES.map(([name, description], i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            item: {
+              "@type": "Service",
+              name,
+              description,
+              areaServed: ["TN", "FR"],
+              provider: { "@id": `${SITE}/#organization` },
+            },
+          })),
+        },
+      ],
+    }),
   component: ServicesPage,
 });
 

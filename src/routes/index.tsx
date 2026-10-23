@@ -8,19 +8,30 @@ import {
 import heroBg from "@/assets/hero-bg.jpg";
 import { useQuote } from "@/components/QuoteDialog";
 import { useT } from "@/components/I18n";
+import { seo, breadcrumb, faqPage, SITE } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "MH Digital Solution — Web, ERP, logiciels & community management" },
-      { name: "description", content: "Création de sites web, e-commerce, ERP, CRM, logiciels métier et community management. Design moderne, performance et résultats." },
-      { property: "og:title", content: "MH Digital Solution" },
-      { property: "og:description", content: "Votre partenaire digital pour des solutions sur mesure." },
-    ],
-  }),
+  head: () =>
+    seo({
+      title: "Agence digitale en Tunisie | Sites web, ERP, e-commerce",
+      description:
+        "Agence digitale à Hammamet (Tunisie) : sites web, e-commerce, ERP/CRM Odoo, applications mobiles et community management. Devis gratuit sous 24h.",
+      path: "/",
+      jsonLd: [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": `${SITE}/#webpage`,
+          url: `${SITE}/`,
+          name: "MH Digital Solution : agence digitale en Tunisie",
+          isPartOf: { "@id": `${SITE}/#website` },
+          about: { "@id": `${SITE}/#organization` },
+          inLanguage: "fr",
+        },
+      ],
+    }),
   component: HomePage,
 });
-
 function HomePage() {
   const { open } = useQuote();
   const { t, lang } = useT();

@@ -3,16 +3,30 @@ import { motion } from "framer-motion";
 import { Target, Lightbulb, Heart, Award, Users, Rocket, Globe2 } from "lucide-react";
 import { useQuote } from "@/components/QuoteDialog";
 import { useT } from "@/components/I18n";
+import { seo, breadcrumb, SITE } from "@/lib/seo";
 
 export const Route = createFileRoute("/a-propos")({
-  head: () => ({
-    meta: [
-      { title: "À propos — MH Digital Solution" },
-      { name: "description", content: "MH Digital Solution : une équipe passionnée de designers et développeurs au service de vos projets digitaux, 100% télétravail depuis Hammamet, Tunisie." },
-      { property: "og:title", content: "About — MH Digital Solution" },
-      { property: "og:description", content: "Our mission, our values, our team." },
-    ],
-  }),
+  head: () =>
+    seo({
+      title: "À propos : agence digitale à Hammamet, Tunisie | MH Digital",
+      description:
+        "MH Digital Solution : équipe de designers et développeurs basée à Hammamet (Tunisie), en télétravail, au service de vos projets web, ERP et mobile.",
+      path: "/a-propos",
+      jsonLd: [
+        breadcrumb([
+          { name: "Accueil", path: "/" },
+          { name: "À propos", path: "/a-propos" },
+        ]),
+        {
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          url: `${SITE}/a-propos`,
+          name: "À propos de MH Digital Solution",
+          about: { "@id": `${SITE}/#organization` },
+          inLanguage: "fr",
+        },
+      ],
+    }),
   component: AboutPage,
 });
 
